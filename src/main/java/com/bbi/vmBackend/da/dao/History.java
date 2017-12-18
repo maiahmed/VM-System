@@ -1,4 +1,4 @@
-package com.bbi.rest.DataAccess.Dao;
+package com.bbi.vmBackend.da.dao;
 
 import java.util.Date;
 

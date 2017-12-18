@@ -1,8 +1,8 @@
-package com.bbi.rest.DataAccess;
+package com.bbi.vmBackend.da;
 
 import java.util.List;
 
-import com.bbi.rest.DataAccess.Dao.DaoObject;
+import com.bbi.vmBackend.da.dao.DaoObject;
 
 public interface DaoHome {
 

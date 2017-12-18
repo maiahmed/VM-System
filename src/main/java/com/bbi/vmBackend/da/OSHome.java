@@ -1,12 +1,12 @@
-package com.bbi.rest.DataAccess;
+package com.bbi.vmBackend.da;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bbi.rest.DataAccess.Dao.DaoObject;
-import com.bbi.rest.DataAccess.Dao.OS;
+import com.bbi.vmBackend.da.dao.DaoObject;
+import com.bbi.vmBackend.da.dao.OS;
 
 public class OSHome extends DatabaseConnection implements DaoHome {
 

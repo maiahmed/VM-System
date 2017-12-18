@@ -1,4 +1,4 @@
-package com.bbi.rest.DataAccess;
+package com.bbi.vmBackend.da;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import com.bbi.rest.DataAccess.Dao.*;
+
+
+
+import com.bbi.vmBackend.da.dao.*;
 
 public class EmployeeHome extends DatabaseConnection implements DaoHome {
 	String sql;
