@@ -1,5 +1,7 @@
 package com.bbi.vmBackend.da;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,19 +10,19 @@ import java.util.List;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.OS;
 
-public class OSHome extends DatabaseConnection implements DaoHome {
+public class OSHome extends DBConnection implements DaoHome {
 
 	String sql;
 
 	@Override
 	public List<DaoObject> listAll() {
 		sql = "SELECT * FROM os ";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		ResultSet rs;
 		OS os = new OS();
 		List<DaoObject> OSList = new ArrayList<>();
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			rs = preparedStmt.executeQuery();
 
 			while (rs.next()) {
@@ -42,11 +44,11 @@ public class OSHome extends DatabaseConnection implements DaoHome {
 	@Override
 	public DaoObject getById(DaoObject obj) {
 		sql = "SELECT * FROM os " + "WHERE id=?";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		ResultSet rs;
 		OS os = (OS) obj;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, os.getOsId());
 			rs = preparedStmt.executeQuery();
 
@@ -74,8 +76,8 @@ public class OSHome extends DatabaseConnection implements DaoHome {
 		boolean entered = false;
 		try {
 
-			conn = GetConnection();
-			preparedStmt = conn.prepareStatement(sql);
+			Connection conn = GetConnection();
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setString(1, os.getOsName());
 			preparedStmt.setString(2, os.getOsExtra_OS());
 			preparedStmt.setInt(3, os.getOsManager());
@@ -94,11 +96,11 @@ public class OSHome extends DatabaseConnection implements DaoHome {
 	@Override
 	public boolean update(DaoObject obj) {
 		sql = "UPDATE os set name=? , extra_os=? , manager=?  WHERE id=?";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		OS os = (OS) obj;
 		boolean entered = false;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setString(1, os.getOsName());
 			preparedStmt.setString(2, os.getOsExtra_OS());
 			preparedStmt.setInt(3, os.getOsManager());
@@ -116,11 +118,11 @@ public class OSHome extends DatabaseConnection implements DaoHome {
 	@Override
 	public boolean delete(DaoObject obj) {
 		sql = "DELETE FROM os " + "WHERE id = ?";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		OS os = (OS) obj;
 		boolean entered = false;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, os.getOsId());
 			preparedStmt.executeUpdate();
 			conn.close();

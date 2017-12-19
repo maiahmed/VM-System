@@ -3,24 +3,26 @@ package com.bbi.vmBackend.da;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.Notifications;
 
-public class NotificationsHome extends DatabaseConnection implements DaoHome {
+public class NotificationsHome extends DBConnection implements DaoHome {
 	String sql;
 
 	@Override
 	public List<DaoObject> listAll() {
 		sql = "SELECT * FROM notification ";
-		conn =  GetConnection();
+		Connection conn =  GetConnection();
 		Notifications notification = new Notifications();
 		List<DaoObject> NotificationsList = new ArrayList<>();
 		ResultSet rs;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			rs = preparedStmt.executeQuery();
 
 			while (rs.next()) {
@@ -51,11 +53,11 @@ public class NotificationsHome extends DatabaseConnection implements DaoHome {
 	@Override
 	public DaoObject getById(DaoObject obj) {
 		sql = "SELECT * FROM notification " + "WHERE notif_user_id=?";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		Notifications notification = (Notifications) obj;
 		ResultSet rs = null;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, notification.getId());
 			rs = preparedStmt.executeQuery();
 
@@ -91,8 +93,8 @@ public class NotificationsHome extends DatabaseConnection implements DaoHome {
 				+ " , hidden , seen , reminder , expired , extra_notif" + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 		try {
 
-			conn = GetConnection();
-			preparedStmt = conn.prepareStatement(sql);
+			Connection conn = GetConnection();
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setString(1, notification.getContent());
 			preparedStmt.setString(2, notification.getFrom());
 			preparedStmt.setDate(3, (Date) notification.getDate());
@@ -119,11 +121,11 @@ public class NotificationsHome extends DatabaseConnection implements DaoHome {
 	public boolean update(DaoObject obj) {
 		sql = "UPDATE notification set content =? , from=? , date=? , notif_request_id=? , notif_user_id=? , "
 				+ "type=? , hidden=? , seen=? , reminder=? , expired=? , extra_notif =? " + " WHERE notification_id=?";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		boolean entered = false;
 		Notifications notification = (Notifications) obj;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setString(1, notification.getContent());
 			preparedStmt.setString(2, notification.getFrom());
 			preparedStmt.setDate(3, (Date) notification.getDate());
@@ -153,9 +155,9 @@ public class NotificationsHome extends DatabaseConnection implements DaoHome {
 		Notifications notification = (Notifications) obj;
 		boolean entered = false;
 		sql = "DELETE FROM notification " + "WHERE notification_id = ?";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, notification.getId());
 			preparedStmt.executeUpdate();
 			conn.close();
@@ -170,13 +172,13 @@ public class NotificationsHome extends DatabaseConnection implements DaoHome {
 
 	public List<DaoObject> EmployeeNotification(DaoObject obj) {
 		sql = "SELECT * FROM notification " + "WHERE notif_user_id=? ";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 
 		Notifications EmployeeNotification = (Notifications)obj;
 		List<DaoObject> EmplNotificationsList = new ArrayList<>();
 		ResultSet rs = null;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, EmployeeNotification.getNoti_UserId());
 			rs = preparedStmt.executeQuery();
 

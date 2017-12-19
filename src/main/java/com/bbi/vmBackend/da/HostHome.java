@@ -22,7 +22,7 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 
 		String sql = "INSERT INTO `host` (`name`, `ip`) VALUES (?, ?);";
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setString(1, host.getName());
 			statement.setString(2, host.getIp());
@@ -46,7 +46,7 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 
 		String sql = "SELECT * FROM host;";
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			Statement statement = jdbcConnection.createStatement();
 			ResultSet resultSet = statement.executeQuery(sql);
 
@@ -77,7 +77,7 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 		String sql = "UPDATE `host` SET `name`=? And `ip`= ? WHERE `host_id`=?";
 
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setString(1, host.getName());
 			statement.setString(2, host.getIp());
@@ -100,7 +100,7 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 		String sql = "DELETE FROM `host` WHERE `host_id`=? ;";
 
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setInt(1, host.getHost_id());
 			boolean rowUpdated = statement.executeUpdate() > 0;
@@ -121,7 +121,7 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 		String sql = "SELECT * FROM host WHERE host_id = ?";
 
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setInt(1, id);
 

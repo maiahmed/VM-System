@@ -1,6 +1,8 @@
 package com.bbi.vmBackend.da;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ import java.util.List;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.History;
 
-public class HistoryHome extends DatabaseConnection implements DaoHome {
+public class HistoryHome extends DBConnection implements DaoHome {
 
 	
 	String sql;
@@ -17,12 +19,12 @@ public class HistoryHome extends DatabaseConnection implements DaoHome {
 	@Override
 	public List<DaoObject> listAll() {
 		sql = "SELECT * FROM history ";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		List<DaoObject> HistoryList = new ArrayList<>();
 		History history = new History();
 		ResultSet rs;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			rs = preparedStmt.executeQuery();
 
 			while (rs.next()) {
@@ -46,11 +48,11 @@ public class HistoryHome extends DatabaseConnection implements DaoHome {
 	@Override
 	public DaoObject getById(DaoObject obj) {
 		sql = "SELECT * FROM history " + "WHERE id=?";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		History history = (History) obj;
 		ResultSet rs;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, history.getId());
 
 			rs = preparedStmt.executeQuery();
@@ -83,8 +85,8 @@ public class HistoryHome extends DatabaseConnection implements DaoHome {
 				+ "history_request_id , status VALUES (?,?,?,?,?,?,?)";
 		try {
 
-			conn = GetConnection();
-			preparedStmt = conn.prepareStatement(sql);
+			Connection conn = GetConnection();
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setString(1, history.getUserType());
 			preparedStmt.setDate(2, (Date) history.getDate());
 			preparedStmt.setString(3, history.getName());
@@ -108,10 +110,10 @@ public class HistoryHome extends DatabaseConnection implements DaoHome {
 		boolean entered = false;
 		sql = "UPDATE history set user_type=? , date=? , name=? , history_user_id=? ,history_request_id=? , status=? "
 				+ " WHERE id=?";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		History history = (History) obj;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setString(1, history.getUserType());
 			preparedStmt.setDate(2, (Date) history.getDate());
 			preparedStmt.setString(3, history.getName());
@@ -132,11 +134,11 @@ public class HistoryHome extends DatabaseConnection implements DaoHome {
 	@Override
 	public boolean delete(DaoObject obj) {
 		sql = "DELETE FROM history " + "WHERE id = ?";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		boolean entered = false;
 		History history = (History) obj;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, history.getId());
 			preparedStmt.executeUpdate();
 			conn.close();
@@ -151,12 +153,12 @@ public class HistoryHome extends DatabaseConnection implements DaoHome {
 
 	public List<DaoObject> EmployeeHistory(DaoObject obj) {
 		sql = "SELECT * FROM history " + "WHERE history_user_id=?";
-		conn = GetConnection();
+		Connection conn = GetConnection();
 		History history = (History) obj;
 		List<DaoObject> EmployeeHistory = new ArrayList<>();
 		ResultSet rs;
 		try {
-			preparedStmt = conn.prepareStatement(sql);
+			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, history.getHistory_UserId());
 			rs = preparedStmt.executeQuery();
 			while (rs.next()) {

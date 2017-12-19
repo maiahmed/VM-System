@@ -23,7 +23,7 @@ public abstract class CommentHome extends DBConnection  implements CommentDaoHom
 		String sql = "INSERT INTO `comment` (`content`, `date`, `comment_user_id`, `comment_request_id`) "
 				+ "VALUES (?,?,?,?);";
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setString(1, comment.getContent());
 			statement.setDate(2, comment.getDate());
@@ -56,7 +56,7 @@ public abstract class CommentHome extends DBConnection  implements CommentDaoHom
 		String sql = "SELECT * FROM request;";
 		try {
 			
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			Statement statement = jdbcConnection.createStatement();
 			ResultSet resultSet = statement.executeQuery(sql);
 
@@ -94,7 +94,7 @@ public abstract class CommentHome extends DBConnection  implements CommentDaoHom
 		String sql = "UPDATE `comment` SET `content`=? WHERE `comment_id`=?";
 
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setString(1, comment.getContent());
 			statement.setInt(2, comment.getComment_id());
@@ -117,7 +117,7 @@ public abstract class CommentHome extends DBConnection  implements CommentDaoHom
 		String sql = "DELETE FROM `comment` WHERE `comment_id`=? ;";
 
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setInt(1, comment.getComment_id());
 
@@ -139,7 +139,7 @@ public abstract class CommentHome extends DBConnection  implements CommentDaoHom
 		String sql = "SELECT * FROM host WHERE host_id = ?";
 
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setInt(1, id);
 

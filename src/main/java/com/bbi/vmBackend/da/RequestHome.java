@@ -23,7 +23,7 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 
 		String sql = "SELECT * FROM request;";
 		try {
-			Connection jdbcConnection = connect();
+			Connection jdbcConnection = GetConnection();
 			Statement statement = jdbcConnection.createStatement();
 			ResultSet resultSet = statement.executeQuery(sql);
 
@@ -70,7 +70,7 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 		String sql = "SELECT * FROM host WHERE host_id = ?";
 
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setInt(1, id);
 
@@ -115,7 +115,7 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 				+ " `internetFacing`,`request_user_id`, `submited_date`, `approved_date`, `handeled_date`, "
 				+ "`period`, `os_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,?);";
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setInt(1, request.getCPU());
 			statement.setInt(2, request.getRAM());
@@ -145,7 +145,7 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 		String sql = "UPDATE `request` SET `HD`=?, `internetFacing`=?, `period`=? WHERE `request_id`=?";
 
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setInt(1, request.getHD());
 			statement.setString(2, request.isInternetFacing());
@@ -169,7 +169,7 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 		String sql = "DELETE FROM `request` WHERE `request_id`=? ;";
 
 		try {
-			Connection jdbcConnection = DBConnection.connect();
+			Connection jdbcConnection = DBConnection.GetConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
 			statement.setInt(1, request.getId());
 

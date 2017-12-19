@@ -5,12 +5,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class DBConnection {
-	private static String dbURL = "jdbc:mysql://localhost:3306/request";
+	private static String dbURL = "jdbc:mysql://localhost:3306/vm";
 	private static String username = "root";
 	private static String passwords = "20130334";
 	private static Connection jdbcConnection;
 
-	public static Connection connect() {
+	public static Connection GetConnection() {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
