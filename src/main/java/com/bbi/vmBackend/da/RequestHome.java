@@ -16,16 +16,22 @@ import com.bbi.vmBackend.da.dao.OS;
 import com.bbi.vmBackend.da.dao.Request;
 
 public class RequestHome extends DBConnection implements RequestDaoHome {
+	private final static String insertQuery =  "INSERT INTO request (`CPU`, `RAM`, `HD`, `creation_date`, `expiring_date`,"
+			+ " `internetFacing`,`request_user_id`, `submited_date`, `approved_date`, `handeled_date`, "
+			+ "`period`, `os_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,?);";
+	private final static String selectQuery = "SELECT * FROM request;";
+	private final static String updateQuery =  "UPDATE `request` SET `HD`=?, `internetFacing`=?, `period`=? WHERE `request_id`=?";
+	private final static String deleteQuery = "DELETE FROM `request` WHERE `request_id`=? ;";
+	private final static String getOneQuery = "SELECT * FROM request WHERE request_id = ?";
 
 	@Override
 	public List<Request> listAll() {
 		List<Request> listRequest = new ArrayList<Request>();
 
-		String sql = "SELECT * FROM request;";
 		try {
-			Connection jdbcConnection = GetConnection();
+			Connection jdbcConnection = getConnection();
 			Statement statement = jdbcConnection.createStatement();
-			ResultSet resultSet = statement.executeQuery(sql);
+			ResultSet resultSet = statement.executeQuery(selectQuery);
 
 			while (resultSet.next()) {
 				int id = resultSet.getInt("id");
@@ -67,11 +73,10 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 	@Override
 	public Request getById(int id) {
 		Request request = null;
-		String sql = "SELECT * FROM host WHERE host_id = ?";
 
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(getOneQuery);
 			statement.setInt(1, id);
 
 			ResultSet resultSet = statement.executeQuery();
@@ -111,12 +116,9 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 
 	@Override
 	public boolean insert(Request request) {
-		String sql = "INSERT INTO request (`CPU`, `RAM`, `HD`, `creation_date`, `expiring_date`,"
-				+ " `internetFacing`,`request_user_id`, `submited_date`, `approved_date`, `handeled_date`, "
-				+ "`period`, `os_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,?);";
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(insertQuery);
 			statement.setInt(1, request.getCPU());
 			statement.setInt(2, request.getRAM());
 			statement.setDate(3, request.getCreation_date());
@@ -142,11 +144,9 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 
 	@Override
 	public boolean update(Request request) {
-		String sql = "UPDATE `request` SET `HD`=?, `internetFacing`=?, `period`=? WHERE `request_id`=?";
-
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(updateQuery);
 			statement.setInt(1, request.getHD());
 			statement.setString(2, request.isInternetFacing());
 			statement.setInt(3, request.getPeriod());
@@ -166,11 +166,9 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 
 	@Override
 	public boolean delete(Request request) {
-		String sql = "DELETE FROM `request` WHERE `request_id`=? ;";
-
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(deleteQuery);
 			statement.setInt(1, request.getId());
 
 			boolean rowUpdated = statement.executeUpdate() > 0;

@@ -4,28 +4,46 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public abstract class DBConnection {
-	private static String dbURL = "jdbc:mysql://localhost:3306/vm";
-	private static String username = "root";
-	private static String passwords = "20130334";
+public class DBConnection {
+	private final static String DBURL = "jdbc:mysql://localhost:3306/vm";
+	private final static String USERNAME = "root";
+	private final static String PASSWORD = "20130334";
 	private static Connection jdbcConnection;
+	private static DBConnection instance;
 
-	public static Connection GetConnection() {
-
+	private void DBConnection() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
+			this.jdbcConnection = DriverManager.getConnection(DBURL, USERNAME,
+					PASSWORD);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Database Connection Creation Failed : "
+					+ e.getMessage());
 			e.printStackTrace();
-		}
-		try {
-			jdbcConnection = DriverManager
-					.getConnection(dbURL, username, passwords);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Database Connection Creation Failed : "
+					+ e.getMessage());
 			e.printStackTrace();
 		}
-		return jdbcConnection;
 
+	}
+
+	public static DBConnection getInstance() {
+		if (instance == null)
+			instance = new DBConnection();
+		else
+			try {
+				if (instance.getConnection().isClosed()) {
+					instance = new DBConnection();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return instance;
+
+	}
+
+	public static Connection getConnection() {
+		return jdbcConnection;
 	}
 }

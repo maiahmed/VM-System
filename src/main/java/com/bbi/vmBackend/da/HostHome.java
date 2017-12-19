@@ -16,14 +16,18 @@ import com.bbi.vmBackend.da.dao.Host;
 import com.bbi.vmBackend.da.dao.Request;
 
 public class HostHome extends DBConnection  implements HostDaoHome {
-
+	private final static String insertQuery = "INSERT INTO `host` (`name`, `ip`) VALUES (?, ?);";
+	private final static String selectQuery = "SELECT * FROM host;";
+	private final static String updateQuery = "UPDATE `host` SET `name`=? And `ip`= ? WHERE `host_id`=?";
+	private final static String deleteQuery = "DELETE FROM `host` WHERE `host_id`=? ;";
+	private final static String getOneQuery = "SELECT * FROM host WHERE host_id = ?";
 	@Override
 	public boolean insert(Host host) {
 
-		String sql = "INSERT INTO `host` (`name`, `ip`) VALUES (?, ?);";
+	
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(insertQuery);
 			statement.setString(1, host.getName());
 			statement.setString(2, host.getIp());
 
@@ -44,11 +48,11 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 	public List<Host> listAll() {
 		List<Host> listHosts = new ArrayList<Host>();
 
-		String sql = "SELECT * FROM host;";
+		
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
+			Connection jdbcConnection = getInstance().getConnection();
 			Statement statement = jdbcConnection.createStatement();
-			ResultSet resultSet = statement.executeQuery(sql);
+			ResultSet resultSet = statement.executeQuery(selectQuery);
 
 			while (resultSet.next()) {
 				int host_id = resultSet.getInt("host_id");
@@ -74,11 +78,10 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 
 	@Override
 	public boolean update(Host host) {
-		String sql = "UPDATE `host` SET `name`=? And `ip`= ? WHERE `host_id`=?";
 
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(updateQuery);
 			statement.setString(1, host.getName());
 			statement.setString(2, host.getIp());
 
@@ -97,11 +100,9 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 
 	@Override
 	public boolean delete(Host host) {
-		String sql = "DELETE FROM `host` WHERE `host_id`=? ;";
-
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(deleteQuery);
 			statement.setInt(1, host.getHost_id());
 			boolean rowUpdated = statement.executeUpdate() > 0;
 			statement.close();
@@ -118,11 +119,9 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 	@Override
 	public Host getById(int id) {
 		Host host = null;
-		String sql = "SELECT * FROM host WHERE host_id = ?";
-
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(getOneQuery);
 			statement.setInt(1, id);
 
 			ResultSet resultSet = statement.executeQuery();

@@ -16,15 +16,20 @@ import com.bbi.vmBackend.da.dao.Host;
 import com.bbi.vmBackend.da.dao.OS;
 import com.bbi.vmBackend.da.dao.Request;
 
-public abstract class CommentHome extends DBConnection  implements CommentDaoHome {
+public  class CommentHome extends DBConnection  implements CommentDaoHome {
+	private final static String insertQuery = "INSERT INTO `comment` (`content`, `date`, `comment_user_id`, `comment_request_id`) "
+			+ "VALUES (?,?,?,?);";
+	private final static String selectQuery = "SELECT * FROM request;";
+	private final static String updateQuery = "UPDATE `comment` SET `content`=? WHERE `comment_id`=?";
+	private final static String deleteQuery = "DELETE FROM `comment` WHERE `comment_id`=? ;";
+	private final static String getOneQuery = "SELECT * FROM host WHERE host_id = ?";
 	@Override
 	public boolean insert(Comment comment) {
 
-		String sql = "INSERT INTO `comment` (`content`, `date`, `comment_user_id`, `comment_request_id`) "
-				+ "VALUES (?,?,?,?);";
+		
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(insertQuery);
 			statement.setString(1, comment.getContent());
 			statement.setDate(2, comment.getDate());
 			statement.setInt(3, comment.getComment_user_id().getUserId());
@@ -53,12 +58,12 @@ public abstract class CommentHome extends DBConnection  implements CommentDaoHom
 		// +
 		// " `approved_date`,`handeled_date`, `period`, `os_id`from request, comment "
 		// + "where comment_id = 1 and request_id = comment_request_id;";
-		String sql = "SELECT * FROM request;";
+		
 		try {
 			
-			Connection jdbcConnection = DBConnection.GetConnection();
+			Connection jdbcConnection = getInstance().getConnection();
 			Statement statement = jdbcConnection.createStatement();
-			ResultSet resultSet = statement.executeQuery(sql);
+			ResultSet resultSet = statement.executeQuery(selectQuery);
 
 			while (resultSet.next()) {
 				int comment_id = resultSet.getInt("comment_id");
@@ -91,11 +96,11 @@ public abstract class CommentHome extends DBConnection  implements CommentDaoHom
 
 	@Override
 	public boolean update(Comment comment) {
-		String sql = "UPDATE `comment` SET `content`=? WHERE `comment_id`=?";
+		
 
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(updateQuery);
 			statement.setString(1, comment.getContent());
 			statement.setInt(2, comment.getComment_id());
 
@@ -114,11 +119,11 @@ public abstract class CommentHome extends DBConnection  implements CommentDaoHom
 
 	@Override
 	public boolean delete(Comment comment) {
-		String sql = "DELETE FROM `comment` WHERE `comment_id`=? ;";
+		
 
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(deleteQuery);
 			statement.setInt(1, comment.getComment_id());
 
 			boolean rowUpdated = statement.executeUpdate() > 0;
@@ -136,11 +141,11 @@ public abstract class CommentHome extends DBConnection  implements CommentDaoHom
 	@Override
 	public Comment getById(int id) {
 		Comment comment = null;
-		String sql = "SELECT * FROM host WHERE host_id = ?";
+		
 
 		try {
-			Connection jdbcConnection = DBConnection.GetConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+			Connection jdbcConnection = getInstance().getConnection();
+			PreparedStatement statement = jdbcConnection.prepareStatement(getOneQuery);
 			statement.setInt(1, id);
 
 			ResultSet resultSet = statement.executeQuery();
