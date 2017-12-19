@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bbi.vmBackend.da.dao.Comment;
+import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.Employee;
+import com.bbi.vmBackend.da.dao.Host;
 import com.bbi.vmBackend.da.dao.OS;
 import com.bbi.vmBackend.da.dao.Request;
 
-public class RequestHome extends DBConnection implements RequestDaoHome {
+public class RequestHome extends DBConnection implements  DaoHome{
 	private final static String insertQuery =  "INSERT INTO request (`CPU`, `RAM`, `HD`, `creation_date`, `expiring_date`,"
 			+ " `internetFacing`,`request_user_id`, `submited_date`, `approved_date`, `handeled_date`, "
 			+ "`period`, `os_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,?);";
@@ -25,8 +27,8 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 	private final static String getOneQuery = "SELECT * FROM request WHERE request_id = ?";
 
 	@Override
-	public List<Request> listAll() {
-		List<Request> listRequest = new ArrayList<Request>();
+	public List<DaoObject> listAll() {
+		List<DaoObject> listRequest = new ArrayList<DaoObject>();
 
 		try {
 			Connection jdbcConnection = getConnection();
@@ -71,13 +73,13 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 	}
 
 	@Override
-	public Request getById(int id) {
-		Request request = null;
+	public DaoObject getById(DaoObject obj) {
+		Request request = (Request) obj;
 
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(getOneQuery);
-			statement.setInt(1, id);
+			statement.setInt(1, request.getId());
 
 			ResultSet resultSet = statement.executeQuery();
 
@@ -99,7 +101,7 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 				employee.setUserId(request_user_id);
 				OS os = new OS();
 				os.setOsId(os_id);
-				request = new Request(id, CPU, RAM, HD, creation_date,
+				request = new Request(request.getId(), CPU, RAM, HD, creation_date,
 						expiring_date, handeled_date, employee, internetFacing,
 						submited_date, approved_date, period, os);
 			}
@@ -115,7 +117,8 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 	}
 
 	@Override
-	public boolean insert(Request request) {
+	public boolean insert(DaoObject obj) {
+		Request request = (Request) obj;
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(insertQuery);
@@ -143,7 +146,8 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 	}
 
 	@Override
-	public boolean update(Request request) {
+	public boolean update(DaoObject obj) {
+		Request request = (Request) obj;
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(updateQuery);
@@ -165,7 +169,8 @@ public class RequestHome extends DBConnection implements RequestDaoHome {
 	}
 
 	@Override
-	public boolean delete(Request request) {
+	public boolean delete(DaoObject obj) {
+		Request request = (Request) obj;
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(deleteQuery);

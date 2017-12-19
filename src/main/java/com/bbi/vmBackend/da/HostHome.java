@@ -11,19 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bbi.vmBackend.da.dao.Comment;
+import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.Employee;
 import com.bbi.vmBackend.da.dao.Host;
 import com.bbi.vmBackend.da.dao.Request;
 
-public class HostHome extends DBConnection  implements HostDaoHome {
+public class HostHome extends DBConnection  implements DaoHome {
 	private final static String insertQuery = "INSERT INTO `host` (`name`, `ip`) VALUES (?, ?);";
 	private final static String selectQuery = "SELECT * FROM host;";
 	private final static String updateQuery = "UPDATE `host` SET `name`=? And `ip`= ? WHERE `host_id`=?";
 	private final static String deleteQuery = "DELETE FROM `host` WHERE `host_id`=? ;";
 	private final static String getOneQuery = "SELECT * FROM host WHERE host_id = ?";
 	@Override
-	public boolean insert(Host host) {
-
+	public boolean insert(DaoObject obj) {
+		Host host = (Host) obj;
 	
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
@@ -45,8 +46,8 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 	}
 
 	@Override
-	public List<Host> listAll() {
-		List<Host> listHosts = new ArrayList<Host>();
+	public List<DaoObject> listAll() {
+		List<DaoObject> listHosts = new ArrayList<DaoObject>();
 
 		
 		try {
@@ -77,8 +78,8 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 	}
 
 	@Override
-	public boolean update(Host host) {
-
+	public boolean update(DaoObject obj) {
+		Host host = (Host) obj;
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(updateQuery);
@@ -99,7 +100,8 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 	}
 
 	@Override
-	public boolean delete(Host host) {
+	public boolean delete(DaoObject obj) {
+		Host host = (Host) obj;
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(deleteQuery);
@@ -117,12 +119,13 @@ public class HostHome extends DBConnection  implements HostDaoHome {
 	}
 
 	@Override
-	public Host getById(int id) {
-		Host host = null;
+	public DaoObject getById(DaoObject obj) {
+		Host host = (Host) obj;
+//		Host host = null;
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(getOneQuery);
-			statement.setInt(1, id);
+			statement.setInt(1, host.getHost_id());
 
 			ResultSet resultSet = statement.executeQuery();
 

@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bbi.vmBackend.da.dao.Comment;
+import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.Employee;
 import com.bbi.vmBackend.da.dao.Host;
 import com.bbi.vmBackend.da.dao.OS;
 import com.bbi.vmBackend.da.dao.Request;
 
-public  class CommentHome extends DBConnection  implements CommentDaoHome {
+public  class CommentHome extends DBConnection  implements DaoHome {
 	private final static String insertQuery = "INSERT INTO `comment` (`content`, `date`, `comment_user_id`, `comment_request_id`) "
 			+ "VALUES (?,?,?,?);";
 	private final static String selectQuery = "SELECT * FROM request;";
@@ -24,13 +25,13 @@ public  class CommentHome extends DBConnection  implements CommentDaoHome {
 	private final static String deleteQuery = "DELETE FROM `comment` WHERE `comment_id`=? ;";
 	private final static String getOneQuery = "SELECT * FROM host WHERE host_id = ?";
 	@Override
-	public boolean insert(Comment comment) {
-
+	public boolean insert(DaoObject obj) {
+		Comment comment = (Comment)obj;
 		
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(insertQuery);
-			statement.setString(1, comment.getContent());
+			statement.setString(1,  comment.getContent());
 			statement.setDate(2, comment.getDate());
 			statement.setInt(3, comment.getComment_user_id().getUserId());
 			statement.setInt(4, comment.getComment_request_id().getId());
@@ -49,8 +50,9 @@ public  class CommentHome extends DBConnection  implements CommentDaoHome {
 	}
 
 	@Override
-	public List<Comment> listAll() {
-		List<Comment> listComments = new ArrayList<Comment>();
+	public List<DaoObject> listAll() {
+		
+		List<DaoObject> listComments = new ArrayList<DaoObject>();
 		// String sql =
 		// "SELECT comment_id,content,date   `CPU`, `RAM`, `HD`, `creation_date`,"
 		// +
@@ -95,8 +97,8 @@ public  class CommentHome extends DBConnection  implements CommentDaoHome {
 	}
 
 	@Override
-	public boolean update(Comment comment) {
-		
+	public boolean update(DaoObject obj) {
+		Comment comment = (Comment) obj;
 
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
@@ -118,8 +120,8 @@ public  class CommentHome extends DBConnection  implements CommentDaoHome {
 	}
 
 	@Override
-	public boolean delete(Comment comment) {
-		
+	public boolean delete(DaoObject obj) {
+		Comment comment = (Comment) obj;
 
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
@@ -139,14 +141,14 @@ public  class CommentHome extends DBConnection  implements CommentDaoHome {
 	}
 
 	@Override
-	public Comment getById(int id) {
-		Comment comment = null;
+	public DaoObject getById(DaoObject obj) {
+		Comment comment = (Comment) obj;
 		
 
 		try {
 			Connection jdbcConnection = getInstance().getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(getOneQuery);
-			statement.setInt(1, id);
+			statement.setInt(1, comment.getComment_id());
 
 			ResultSet resultSet = statement.executeQuery();
 
