@@ -1,14 +1,15 @@
 package com.bbi.vmBackend.da.dao;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 public class Comment implements DaoObject {
 	
 	private int comment_id;
 	private String content;
 	private Date date;
-	private Employee comment_user_id;
-	private Request comment_request_id;
+	private int comment_user_id;
+	private int comment_request_id;
 	private String extra_comment;
 
 	public int getComment_id() {
@@ -35,19 +36,19 @@ public class Comment implements DaoObject {
 		this.date = date;
 	}
 
-	public Employee getComment_user_id() {
+	public int getComment_user_id() {
 		return comment_user_id;
 	}
 
-	public void setComment_user_id(Employee comment_user_id) {
+	public void setComment_user_id(int comment_user_id) {
 		this.comment_user_id = comment_user_id;
 	}
 
-	public Request getComment_request_id() {
+	public int getComment_request_id() {
 		return comment_request_id;
 	}
 
-	public void setComment_request_id(Request comment_request_id) {
+	public void setComment_request_id(int comment_request_id) {
 		this.comment_request_id = comment_request_id;
 	}
 
@@ -60,7 +61,7 @@ public class Comment implements DaoObject {
 	}
 
 	public Comment(int comment_id, String content, Date date,
-			Employee comment_user_id, Request comment_request_id) {
+			int comment_user_id, int comment_request_id) {
 		super();
 		this.comment_id = comment_id;
 		this.content = content;

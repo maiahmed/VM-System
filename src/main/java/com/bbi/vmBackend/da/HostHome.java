@@ -16,7 +16,7 @@ import com.bbi.vmBackend.da.dao.Employee;
 import com.bbi.vmBackend.da.dao.Host;
 import com.bbi.vmBackend.da.dao.Request;
 
-public class HostHome extends DBConnection  implements DaoHome {
+public class HostHome extends SingletonDBConnection  implements DaoHome {
 	private final static String insertQuery = "INSERT INTO `host` (`name`, `ip`) VALUES (?, ?);";
 	private final static String selectQuery = "SELECT * FROM host;";
 	private final static String updateQuery = "UPDATE `host` SET `name`=? And `ip`= ? WHERE `host_id`=?";
@@ -27,7 +27,7 @@ public class HostHome extends DBConnection  implements DaoHome {
 		Host host = (Host) obj;
 	
 		try {
-			Connection jdbcConnection = getInstance().getConnection();
+			Connection jdbcConnection = getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(insertQuery);
 			statement.setString(1, host.getName());
 			statement.setString(2, host.getIp());
@@ -51,7 +51,7 @@ public class HostHome extends DBConnection  implements DaoHome {
 
 		
 		try {
-			Connection jdbcConnection = getInstance().getConnection();
+			Connection jdbcConnection = getConnection();
 			Statement statement = jdbcConnection.createStatement();
 			ResultSet resultSet = statement.executeQuery(selectQuery);
 
@@ -81,7 +81,7 @@ public class HostHome extends DBConnection  implements DaoHome {
 	public boolean update(DaoObject obj) {
 		Host host = (Host) obj;
 		try {
-			Connection jdbcConnection = getInstance().getConnection();
+			Connection jdbcConnection = getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(updateQuery);
 			statement.setString(1, host.getName());
 			statement.setString(2, host.getIp());
@@ -103,7 +103,7 @@ public class HostHome extends DBConnection  implements DaoHome {
 	public boolean delete(DaoObject obj) {
 		Host host = (Host) obj;
 		try {
-			Connection jdbcConnection = getInstance().getConnection();
+			Connection jdbcConnection = getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(deleteQuery);
 			statement.setInt(1, host.getHost_id());
 			boolean rowUpdated = statement.executeUpdate() > 0;
@@ -123,7 +123,7 @@ public class HostHome extends DBConnection  implements DaoHome {
 		Host host = (Host) obj;
 //		Host host = null;
 		try {
-			Connection jdbcConnection = getInstance().getConnection();
+			Connection jdbcConnection = getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(getOneQuery);
 			statement.setInt(1, host.getHost_id());
 

@@ -1,6 +1,6 @@
 package com.bbi.vmBackend.da.dao;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Request implements DaoObject {
 	private int id;
@@ -10,21 +10,21 @@ public class Request implements DaoObject {
 	private Date creation_date;
 	private Date expiring_date;
 	private Date handeled_date;
-	private Employee request_user_id;
+	private int request_user_id;
 	private String internetFacing;
 	private Date submited_date;
 	private Date approved_date;
 	private int period;
-	private OS os_id;
+	private int os_id;
 	
 	public Request() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public Request(int id, int cPU, int rAM, int hD, Date creation_date,
-			Date expiring_date, Date handeled_date, Employee request_user_id,
+			Date expiring_date, Date handeled_date, int request_user_id,
 			String internetFacing, Date submited_date, Date approved_date,
-			int period, OS os_id) {
+			int period, int os_id) {
 		super();
 		this.id = id;
 		CPU = cPU;
@@ -97,11 +97,11 @@ public class Request implements DaoObject {
 		this.handeled_date = handeled_date;
 	}
 
-	public Employee getRequest_user_id() {
+	public int getRequest_user_id() {
 		return request_user_id;
 	}
 
-	public void setRequest_user_id(Employee request_user_id) {
+	public void setRequest_user_id(int request_user_id) {
 		this.request_user_id = request_user_id;
 	}
 
@@ -137,11 +137,11 @@ public class Request implements DaoObject {
 		this.period = period;
 	}
 
-	public OS getOs_id() {
+	public int getOs_id() {
 		return os_id;
 	}
 
-	public void setOs_id(OS os_id) {
+	public void setOs_id(int os_id) {
 		this.os_id = os_id;
 	}
 

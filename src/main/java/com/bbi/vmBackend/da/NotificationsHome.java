@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.Notifications;
 
-public class NotificationsHome extends DBConnection implements DaoHome {
+public class NotificationsHome extends SingletonDBConnection implements DaoHome {
 	String sql;
 
 	@Override
@@ -53,7 +53,7 @@ public class NotificationsHome extends DBConnection implements DaoHome {
 	@Override
 	public DaoObject getById(DaoObject obj) {
 		sql = "SELECT * FROM notification " + "WHERE notif_user_id=?";
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		Notifications notification = (Notifications) obj;
 		ResultSet rs = null;
 		try {
@@ -93,7 +93,7 @@ public class NotificationsHome extends DBConnection implements DaoHome {
 				+ " , hidden , seen , reminder , expired , extra_notif" + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 		try {
 
-			Connection conn = getInstance().getConnection();
+			Connection conn = getConnection();
 			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setString(1, notification.getContent());
 			preparedStmt.setString(2, notification.getFrom());
@@ -121,7 +121,7 @@ public class NotificationsHome extends DBConnection implements DaoHome {
 	public boolean update(DaoObject obj) {
 		sql = "UPDATE notification set content =? , from=? , date=? , notif_request_id=? , notif_user_id=? , "
 				+ "type=? , hidden=? , seen=? , reminder=? , expired=? , extra_notif =? " + " WHERE notification_id=?";
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		boolean entered = false;
 		Notifications notification = (Notifications) obj;
 		try {
@@ -155,7 +155,7 @@ public class NotificationsHome extends DBConnection implements DaoHome {
 		Notifications notification = (Notifications) obj;
 		boolean entered = false;
 		sql = "DELETE FROM notification " + "WHERE notification_id = ?";
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		try {
 			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, notification.getId());
@@ -172,7 +172,7 @@ public class NotificationsHome extends DBConnection implements DaoHome {
 
 	public List<DaoObject> EmployeeNotification(DaoObject obj) {
 		sql = "SELECT * FROM notification " + "WHERE notif_user_id=? ";
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 
 		Notifications EmployeeNotification = (Notifications)obj;
 		List<DaoObject> EmplNotificationsList = new ArrayList<>();

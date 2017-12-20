@@ -10,7 +10,7 @@ import java.util.List;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.OS;
 
-public class OSHome extends DBConnection implements DaoHome {
+public class OSHome extends SingletonDBConnection implements DaoHome {
 
 	private final static String insertQuery =  "INSERT INTO os (name, extra_os, manager) VALUES (?,?,?)";
 	private final static String selectQuery = "SELECT * FROM os ";
@@ -20,7 +20,7 @@ public class OSHome extends DBConnection implements DaoHome {
 
 	@Override
 	public List<DaoObject> listAll() {
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		ResultSet rs;
 		OS os = new OS();
 		List<DaoObject> OSList = new ArrayList<>();
@@ -46,7 +46,7 @@ public class OSHome extends DBConnection implements DaoHome {
 
 	@Override
 	public DaoObject getById(DaoObject obj) {
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		ResultSet rs;
 		OS os = (OS) obj;
 		try {
@@ -77,7 +77,7 @@ public class OSHome extends DBConnection implements DaoHome {
 		boolean entered = false;
 		try {
 
-			Connection conn = getInstance().getConnection();
+			Connection conn = getConnection();
 			PreparedStatement preparedStmt = conn.prepareStatement(insertQuery);
 			preparedStmt.setString(1, os.getOsName());
 			preparedStmt.setString(2, os.getOsExtra_OS());
@@ -96,7 +96,7 @@ public class OSHome extends DBConnection implements DaoHome {
 
 	@Override
 	public boolean update(DaoObject obj) {
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		OS os = (OS) obj;
 		boolean entered = false;
 		try {
@@ -118,7 +118,7 @@ public class OSHome extends DBConnection implements DaoHome {
 	@Override
 	public boolean delete(DaoObject obj) {
 	
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		OS os = (OS) obj;
 		boolean entered = false;
 		try {

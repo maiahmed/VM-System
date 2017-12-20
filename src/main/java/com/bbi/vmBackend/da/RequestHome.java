@@ -17,7 +17,7 @@ import com.bbi.vmBackend.da.dao.Host;
 import com.bbi.vmBackend.da.dao.OS;
 import com.bbi.vmBackend.da.dao.Request;
 
-public class RequestHome extends DBConnection implements  DaoHome{
+public class RequestHome extends SingletonDBConnection implements  DaoHome{
 	private final static String insertQuery =  "INSERT INTO request (`CPU`, `RAM`, `HD`, `creation_date`, `expiring_date`,"
 			+ " `internetFacing`,`request_user_id`, `submited_date`, `approved_date`, `handeled_date`, "
 			+ "`period`, `os_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,?);";
@@ -49,14 +49,9 @@ public class RequestHome extends DBConnection implements  DaoHome{
 				Date approved_date = resultSet.getDate("approved_date");
 				int period = resultSet.getInt("period");
 				int os_id = resultSet.getInt("os_id");
-
-				Employee employee = new Employee();
-				employee.setUserId(request_user_id);
-				OS os = new OS();
-				os.setOsId(os_id);
 				Request request = new Request(id, CPU, RAM, HD, creation_date,
-						expiring_date, handeled_date, employee, internetFacing,
-						submited_date, approved_date, period, os);
+						expiring_date, handeled_date, request_user_id, internetFacing,
+						submited_date, approved_date, period, os_id);
 				listRequest.add(request);
 			}
 
@@ -77,7 +72,7 @@ public class RequestHome extends DBConnection implements  DaoHome{
 		Request request = (Request) obj;
 
 		try {
-			Connection jdbcConnection = getInstance().getConnection();
+			Connection jdbcConnection = getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(getOneQuery);
 			statement.setInt(1, request.getId());
 
@@ -96,14 +91,9 @@ public class RequestHome extends DBConnection implements  DaoHome{
 				Date approved_date = resultSet.getDate("approved_date");
 				int period = resultSet.getInt("period");
 				int os_id = resultSet.getInt("os_id");
-
-				Employee employee = new Employee();
-				employee.setUserId(request_user_id);
-				OS os = new OS();
-				os.setOsId(os_id);
 				request = new Request(request.getId(), CPU, RAM, HD, creation_date,
-						expiring_date, handeled_date, employee, internetFacing,
-						submited_date, approved_date, period, os);
+						expiring_date, handeled_date, request_user_id, internetFacing,
+						submited_date, approved_date, period, os_id);
 			}
 
 			resultSet.close();
@@ -120,19 +110,19 @@ public class RequestHome extends DBConnection implements  DaoHome{
 	public boolean insert(DaoObject obj) {
 		Request request = (Request) obj;
 		try {
-			Connection jdbcConnection = getInstance().getConnection();
+			Connection jdbcConnection = getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(insertQuery);
 			statement.setInt(1, request.getCPU());
 			statement.setInt(2, request.getRAM());
-			statement.setDate(3, request.getCreation_date());
-			statement.setDate(4, request.getExpiring_date());
+			statement.setDate(3, (Date) request.getCreation_date());
+			statement.setDate(4, (Date) request.getExpiring_date());
 			statement.setString(5, request.isInternetFacing());
-			statement.setInt(6, request.getRequest_user_id().getUserId());
-			statement.setDate(7, request.getSubmited_date());
-			statement.setDate(8, request.getApproved_date());
-			statement.setDate(9, request.getHandeled_date());
+			statement.setInt(6, request.getRequest_user_id());
+			statement.setDate(7, (Date) request.getSubmited_date());
+			statement.setDate(8, (Date) request.getApproved_date());
+			statement.setDate(9, (Date) request.getHandeled_date());
 			statement.setInt(1, request.getPeriod());
-			statement.setInt(1, request.getOs_id().getOsId());
+			statement.setInt(1, request.getOs_id());
 			boolean rowInserted = statement.executeUpdate() > 0;
 			statement.close();
 			jdbcConnection.close();
@@ -149,7 +139,7 @@ public class RequestHome extends DBConnection implements  DaoHome{
 	public boolean update(DaoObject obj) {
 		Request request = (Request) obj;
 		try {
-			Connection jdbcConnection = getInstance().getConnection();
+			Connection jdbcConnection = getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(updateQuery);
 			statement.setInt(1, request.getHD());
 			statement.setString(2, request.isInternetFacing());
@@ -172,7 +162,7 @@ public class RequestHome extends DBConnection implements  DaoHome{
 	public boolean delete(DaoObject obj) {
 		Request request = (Request) obj;
 		try {
-			Connection jdbcConnection = getInstance().getConnection();
+			Connection jdbcConnection = getConnection();
 			PreparedStatement statement = jdbcConnection.prepareStatement(deleteQuery);
 			statement.setInt(1, request.getId());
 

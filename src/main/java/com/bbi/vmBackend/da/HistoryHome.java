@@ -11,19 +11,19 @@ import java.util.List;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.History;
 
-public class HistoryHome extends DBConnection implements DaoHome {
-	private final static String insertQuery = "INSERT INTO history user_type , date , name , history_user_id , "
+public class HistoryHome extends SingletonDBConnection implements DaoHome {
+	private final static String INSERTQUERY = "INSERT INTO history user_type , date , name , history_user_id , "
 			+ "history_request_id , status VALUES (?,?,?,?,?,?,?)";	private final static String selectQuery = "SELECT * FROM history ";
-	private final static String updateQuery = "UPDATE history set user_type=? , date=? , name=? , history_user_id=? ,history_request_id=? , status=? "
+	private final static String UPDATEQUERY = "UPDATE history set user_type=? , date=? , name=? , history_user_id=? ,history_request_id=? , status=? "
 			+ " WHERE id=?";
-	private final static String deleteQuery =  "DELETE FROM history " + "WHERE id = ?";
-	private final static String getOneQuery = "SELECT * FROM history " + "WHERE id=?";
+	private final static String DELETEQUERY =  "DELETE FROM history " + "WHERE id = ?";
+	private final static String GETONEQUERY = "SELECT * FROM history " + "WHERE id=?";
 	private final static String listEmployeeHistoryQuery = "SELECT * FROM history " + "WHERE history_user_id=?";
 
 	@Override
 	public List<DaoObject> listAll() {
 		
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		List<DaoObject> HistoryList = new ArrayList<>();
 		History history = new History();
 		ResultSet rs;
@@ -51,11 +51,11 @@ public class HistoryHome extends DBConnection implements DaoHome {
 
 	@Override
 	public DaoObject getById(DaoObject obj) {
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		History history = (History) obj;
 		ResultSet rs;
 		try {
-			PreparedStatement preparedStmt = conn.prepareStatement(getOneQuery);
+			PreparedStatement preparedStmt = conn.prepareStatement(GETONEQUERY);
 			preparedStmt.setInt(1, history.getId());
 
 			rs = preparedStmt.executeQuery();
@@ -87,8 +87,8 @@ public class HistoryHome extends DBConnection implements DaoHome {
 		
 		try {
 
-			Connection conn = getInstance().getConnection();
-			PreparedStatement preparedStmt = conn.prepareStatement(insertQuery);
+			Connection conn = getConnection();
+			PreparedStatement preparedStmt = conn.prepareStatement(INSERTQUERY);
 			preparedStmt.setString(1, history.getUserType());
 			preparedStmt.setDate(2, (Date) history.getDate());
 			preparedStmt.setString(3, history.getName());
@@ -111,10 +111,10 @@ public class HistoryHome extends DBConnection implements DaoHome {
 	public boolean update(DaoObject obj) {
 		boolean entered = false;
 	
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		History history = (History) obj;
 		try {
-			PreparedStatement preparedStmt = conn.prepareStatement(updateQuery);
+			PreparedStatement preparedStmt = conn.prepareStatement(UPDATEQUERY);
 			preparedStmt.setString(1, history.getUserType());
 			preparedStmt.setDate(2, (Date) history.getDate());
 			preparedStmt.setString(3, history.getName());
@@ -135,11 +135,11 @@ public class HistoryHome extends DBConnection implements DaoHome {
 	@Override
 	public boolean delete(DaoObject obj) {
 	
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		boolean entered = false;
 		History history = (History) obj;
 		try {
-			PreparedStatement preparedStmt = conn.prepareStatement(deleteQuery);
+			PreparedStatement preparedStmt = conn.prepareStatement(DELETEQUERY);
 			preparedStmt.setInt(1, history.getId());
 			preparedStmt.executeUpdate();
 			conn.close();
@@ -153,7 +153,7 @@ public class HistoryHome extends DBConnection implements DaoHome {
 	}
 
 	public List<DaoObject> EmployeeHistory(DaoObject obj) {
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		History history = (History) obj;
 		List<DaoObject> EmployeeHistory = new ArrayList<>();
 		ResultSet rs;

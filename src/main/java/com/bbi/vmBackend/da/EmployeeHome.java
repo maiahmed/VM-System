@@ -9,25 +9,25 @@ import java.util.List;
 
 import com.bbi.vmBackend.da.dao.*;
 
-public class EmployeeHome extends DBConnection implements DaoHome {
-	private final static String insertQuery = "INSERT INTO employee (name, email, password, type, extra_impl, manager) " + "VALUES (?,?,?,?,?,?)";
-	private final static String selectQuery = "SELECT * FROM employee";
-	private final static String updateQuery = "UPDATE employee set name=? ,email=? , password=? , type=? , extra_impl=? , manager=?"
+public class EmployeeHome extends SingletonDBConnection implements DaoHome {
+	private final static String INSERTQUERY = "INSERT INTO employee (name, email, password, type, extra_impl, manager) " + "VALUES (?,?,?,?,?,?)";
+	private final static String SELECTQUERY = "SELECT * FROM employee";
+	private final static String UPDATEQUERY = "UPDATE employee set name=? ,email=? , password=? , type=? , extra_impl=? , manager=?"
 			+ " WHERE user_id=?";
-	private final static String deleteQuery = "DELETE FROM employee " + "WHERE user_id = ?";
-	private final static String getOneQuery = "SELECT * FROM employee " + "Where user_id=?";
+	private final static String DELETEQUERY = "DELETE FROM employee " + "WHERE user_id = ?";
+	private final static String GETONEQUERY = "SELECT * FROM employee " + "Where user_id=?";
 
 	@Override
 	public List<DaoObject> listAll() {
 	
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		
 		ResultSet rs;
 		List<DaoObject> EmployeesList = new ArrayList<>();
 		Employee employee = new Employee();
 
 		try {
-			PreparedStatement preparedStmt = conn.prepareStatement(selectQuery);
+			PreparedStatement preparedStmt = conn.prepareStatement(SELECTQUERY);
 			rs = preparedStmt.executeQuery();
 
 			while (rs.next()) {
@@ -55,11 +55,11 @@ public class EmployeeHome extends DBConnection implements DaoHome {
 	public DaoObject getById(DaoObject obj) {
 
 		
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		ResultSet rs;
 		Employee employee = (Employee) obj;
 		try {
-			PreparedStatement preparedStmt = conn.prepareStatement(getOneQuery);
+			PreparedStatement preparedStmt = conn.prepareStatement(GETONEQUERY);
 			preparedStmt.setInt(1, employee.getUserId());
 			rs = preparedStmt.executeQuery();
 
@@ -86,8 +86,8 @@ public class EmployeeHome extends DBConnection implements DaoHome {
 		boolean entered = false;
 		try {
 
-			Connection conn = getInstance().getConnection();
-			PreparedStatement preparedStmt = conn.prepareStatement(insertQuery);
+			Connection conn = getConnection();
+			PreparedStatement preparedStmt = conn.prepareStatement(INSERTQUERY);
 			preparedStmt.setString(1, employee.getName());
 			preparedStmt.setString(2, employee.getEmail());
 			preparedStmt.setString(3, employee.getPassword());
@@ -108,11 +108,11 @@ public class EmployeeHome extends DBConnection implements DaoHome {
 	@Override
 	public boolean update(DaoObject obj) {
 	
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		boolean entered = false;
 		Employee employee = (Employee) obj;
 		try {
-			PreparedStatement preparedStmt = conn.prepareStatement(updateQuery);
+			PreparedStatement preparedStmt = conn.prepareStatement(UPDATEQUERY);
 			preparedStmt.setString(1, employee.getName());
 			preparedStmt.setString(2, employee.getEmail());
 			preparedStmt.setString(3, employee.getPassword());
@@ -133,11 +133,11 @@ public class EmployeeHome extends DBConnection implements DaoHome {
 	@Override
 	public boolean delete(DaoObject obj) {
 	
-		Connection conn = getInstance().getConnection();
+		Connection conn = getConnection();
 		Employee employee = (Employee) obj;
 		boolean entered = false;
 		try {
-			PreparedStatement preparedStmt = conn.prepareStatement(deleteQuery);
+			PreparedStatement preparedStmt = conn.prepareStatement(DELETEQUERY);
 			preparedStmt.setInt(1, employee.getUserId());
 			preparedStmt.executeUpdate();
 			conn.close();
