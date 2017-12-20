@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.bbi.vmBackend.da.dao.*;
 
-public class EmployeeHome extends SingletonDBConnection implements DaoHome {
+public class EmployeeHome extends DBConnection implements DaoHome {
 	private final static String INSERTQUERY = "INSERT INTO employee (name, email, password, type, extra_impl, manager) " + "VALUES (?,?,?,?,?,?)";
 	private final static String SELECTQUERY = "SELECT * FROM employee";
 	private final static String UPDATEQUERY = "UPDATE employee set name=? ,email=? , password=? , type=? , extra_impl=? , manager=?"

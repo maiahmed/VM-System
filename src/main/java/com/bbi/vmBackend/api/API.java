@@ -2,6 +2,7 @@ package com.bbi.vmBackend.api;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -13,9 +14,10 @@ import com.bbi.vmBackend.da.dao.Request;
 public class API {
 	    // http://localhost:8080/VM_Syatem/rest/api/
 		@POST
-		@Path("/")
-		@Produces(MediaType.APPLICATION_XML)
-	public Request createTicket(Request request) {
+		@Path("/{res}")
+		@Produces(MediaType.APPLICATION_JSON)
+	public static Request createTicket(Request request,@PathParam("res") String resource) {
+			System.out.println("==================" + resource);
 			 return RequestImpl.createTicket(request);
 
 	}

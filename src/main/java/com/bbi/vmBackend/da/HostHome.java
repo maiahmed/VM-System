@@ -16,7 +16,7 @@ import com.bbi.vmBackend.da.dao.Employee;
 import com.bbi.vmBackend.da.dao.Host;
 import com.bbi.vmBackend.da.dao.Request;
 
-public class HostHome extends SingletonDBConnection  implements DaoHome {
+public class HostHome extends DBConnection  implements DaoHome {
 	private final static String insertQuery = "INSERT INTO `host` (`name`, `ip`) VALUES (?, ?);";
 	private final static String selectQuery = "SELECT * FROM host;";
 	private final static String updateQuery = "UPDATE `host` SET `name`=? And `ip`= ? WHERE `host_id`=?";

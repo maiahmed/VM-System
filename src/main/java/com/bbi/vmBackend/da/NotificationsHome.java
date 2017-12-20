@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.Notifications;
 
-public class NotificationsHome extends SingletonDBConnection implements DaoHome {
+public class NotificationsHome extends DBConnection implements DaoHome {
 	String sql;
 
 	@Override

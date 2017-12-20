@@ -11,7 +11,7 @@ import java.util.List;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.History;
 
-public class HistoryHome extends SingletonDBConnection implements DaoHome {
+public class HistoryHome extends DBConnection implements DaoHome {
 	private final static String INSERTQUERY = "INSERT INTO history user_type , date , name , history_user_id , "
 			+ "history_request_id , status VALUES (?,?,?,?,?,?,?)";	private final static String selectQuery = "SELECT * FROM history ";
 	private final static String UPDATEQUERY = "UPDATE history set user_type=? , date=? , name=? , history_user_id=? ,history_request_id=? , status=? "

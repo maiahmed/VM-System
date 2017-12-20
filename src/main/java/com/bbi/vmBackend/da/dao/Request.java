@@ -16,6 +16,23 @@ public class Request implements DaoObject {
 	private Date approved_date;
 	private int period;
 	private int os_id;
+	private String os_type;
+	private String status; /// 0 1 2
+	
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setOs_type(String os_type) {
+		this.os_type = os_type;
+	}
+	
+	public String getOs_type() {
+		return os_type;
+	}
 	
 	public Request() {
 		// TODO Auto-generated constructor stub
@@ -24,7 +41,7 @@ public class Request implements DaoObject {
 	public Request(int id, int cPU, int rAM, int hD, Date creation_date,
 			Date expiring_date, Date handeled_date, int request_user_id,
 			String internetFacing, Date submited_date, Date approved_date,
-			int period, int os_id) {
+			int period, int os_id, String status) {
 		super();
 		this.id = id;
 		CPU = cPU;
@@ -39,6 +56,7 @@ public class Request implements DaoObject {
 		this.approved_date = approved_date;
 		this.period = period;
 		this.os_id = os_id;
+		this.status = status;
 	}
 
 	public int getId() {

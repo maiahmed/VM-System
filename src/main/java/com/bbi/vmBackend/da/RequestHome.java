@@ -17,7 +17,7 @@ import com.bbi.vmBackend.da.dao.Host;
 import com.bbi.vmBackend.da.dao.OS;
 import com.bbi.vmBackend.da.dao.Request;
 
-public class RequestHome extends SingletonDBConnection implements  DaoHome{
+public class RequestHome extends DBConnection implements  DaoHome{
 	private final static String insertQuery =  "INSERT INTO request (`CPU`, `RAM`, `HD`, `creation_date`, `expiring_date`,"
 			+ " `internetFacing`,`request_user_id`, `submited_date`, `approved_date`, `handeled_date`, "
 			+ "`period`, `os_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,?);";
@@ -49,9 +49,10 @@ public class RequestHome extends SingletonDBConnection implements  DaoHome{
 				Date approved_date = resultSet.getDate("approved_date");
 				int period = resultSet.getInt("period");
 				int os_id = resultSet.getInt("os_id");
+				String status = resultSet.getString("status");
 				Request request = new Request(id, CPU, RAM, HD, creation_date,
 						expiring_date, handeled_date, request_user_id, internetFacing,
-						submited_date, approved_date, period, os_id);
+						submited_date, approved_date, period, os_id,status);
 				listRequest.add(request);
 			}
 
@@ -91,9 +92,10 @@ public class RequestHome extends SingletonDBConnection implements  DaoHome{
 				Date approved_date = resultSet.getDate("approved_date");
 				int period = resultSet.getInt("period");
 				int os_id = resultSet.getInt("os_id");
+				String status = resultSet.getString("status");
 				request = new Request(request.getId(), CPU, RAM, HD, creation_date,
 						expiring_date, handeled_date, request_user_id, internetFacing,
-						submited_date, approved_date, period, os_id);
+						submited_date, approved_date, period, os_id,status);
 			}
 
 			resultSet.close();
@@ -124,6 +126,7 @@ public class RequestHome extends SingletonDBConnection implements  DaoHome{
 			statement.setInt(1, request.getPeriod());
 			statement.setInt(1, request.getOs_id());
 			boolean rowInserted = statement.executeUpdate() > 0;
+			
 			statement.close();
 			jdbcConnection.close();
 			return rowInserted;

@@ -10,7 +10,7 @@ import java.util.List;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.OS;
 
-public class OSHome extends SingletonDBConnection implements DaoHome {
+public class OSHome extends DBConnection implements DaoHome {
 
 	private final static String insertQuery =  "INSERT INTO os (name, extra_os, manager) VALUES (?,?,?)";
 	private final static String selectQuery = "SELECT * FROM os ";
