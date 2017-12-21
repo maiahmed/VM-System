@@ -6,7 +6,16 @@ public class OS implements DaoObject {
 	private String osName;
 	private String osExtra_OS;
 	private int osManager;
-
+	private int os_user_id;
+	
+	public void setOs_user_id(int os_user_id) {
+		this.os_user_id = os_user_id;
+	}
+	
+	public int getOs_user_id() {
+		return os_user_id;
+	}
+	
 	public int getOsId() {
 		return osId;
 	}

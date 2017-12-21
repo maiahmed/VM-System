@@ -6,7 +6,7 @@ public abstract class DBConnection extends SingletonDBConnection {
 	
 	private SingletonDBConnection dbConnection;  //composition has-a relationship
 	
-	public Connection getConnection() {
+	public  Connection getConnection() {
 		return dbConnection.getConnection();
 	}
 	
