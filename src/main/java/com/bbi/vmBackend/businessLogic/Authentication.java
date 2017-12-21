@@ -15,7 +15,7 @@ public class Authentication {
 		
 		Employee employee = employeeHome.getEmployee(userName, password);
 		if (employee != null) {
-			Session sessionId = session.insertSession(employee.getUserId());
+			session = session.insertSession(employee.getUserId());
 			return true;
 		} else
 			return false;
