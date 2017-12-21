@@ -20,7 +20,7 @@ public class SessionHome extends SingletonDBConnection implements DaoHome {
 	private final static String UPDATEQUERY = "UPDATE session set token=? , key=? , lastInsertion=? , lastUpdate=?"
 			+ " WHERE user_id=?";
 	private final static String DELETEQUERY = "DELETE FROM session " + "WHERE user_id = ?";
-	private final static String GETONEQUERY = "SELECT * FROM session " + "Where user_id=?";
+	private final static String GETONEQUERY = "SELECT * FROM session Where session_id=?";
 
 	@Override
 	public List<DaoObject> listAll() {
@@ -150,5 +150,7 @@ public class SessionHome extends SingletonDBConnection implements DaoHome {
 		}
 		return entered;
 	}
+
+
 
 }

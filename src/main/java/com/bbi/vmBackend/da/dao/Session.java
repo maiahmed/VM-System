@@ -32,7 +32,7 @@ public class Session implements DaoObject {
 	}
 
 	public void setToken(int token) { //
-		this.token = getUser_Id() + 1;
+		this.token = getUser_Id();
 	}
 
 	public String getKey() {
@@ -40,13 +40,8 @@ public class Session implements DaoObject {
 	}
 
 	public void setKey(String key) {
-		String out = "";
-		for (int i = 0; i < key.length(); i++) {
-			char keychar = key.charAt(i);
-			keychar += 3;
-			out += keychar;
-		}
-		this.key = out;
+		
+		this.key = key;
 	}
 
 	public Date getLastUpdate() {

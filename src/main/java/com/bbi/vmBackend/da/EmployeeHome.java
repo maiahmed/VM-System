@@ -10,20 +10,15 @@ import java.util.List;
 
 import com.bbi.vmBackend.da.dao.*;
 
-<<<<<<< HEAD
-public class EmployeeHome extends SingletonDBConnection implements DaoHome {
-	private final static String INSERTQUERY = "INSERT INTO employee (name, email, password, type, extra_impl, manager) "
-			+ "VALUES (?,?,?,?,?,?)";
-=======
+
 public class EmployeeHome extends DBConnection implements DaoHome {
 	private final static String INSERTQUERY = "INSERT INTO employee (name, email, password, type, extra_impl, manager) " + "VALUES (?,?,?,?,?,?)";
->>>>>>> 0dde1115d285363a0ba96ed74d82072801761ebd
 	private final static String SELECTQUERY = "SELECT * FROM employee";
 	private final static String UPDATEQUERY = "UPDATE employee set name=? ,email=? , password=? , type=? , extra_impl=? , manager=?"
 			+ " WHERE user_id=?";
 	private final static String DELETEQUERY = "DELETE FROM employee " + "WHERE user_id = ?";
 	private final static String GETONEQUERY = "SELECT * FROM employee " + "Where user_id=?";
-	private final static String GETEMPLOYEEINFO = "SELECT user_id , name , email , type , manager FROM employee ";
+	private final static String GETEMPLOYEEINFO = "SELECT user_id , name , email , type , manager FROM employee where name=? and password = ?";
 	private final static String INSERTNEWSESSION = "INSERT INTO session (user_Id, token, key, lastInsertion, lastUpdate)";
 
 	public Session createSession(DaoObject obj) {
@@ -201,11 +196,6 @@ public class EmployeeHome extends DBConnection implements DaoHome {
 			System.out.println("Error in deleting the selected employee");
 		}
 		return entered;
-	}
-
-	public  Employee getEmployee(String userName, String password) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

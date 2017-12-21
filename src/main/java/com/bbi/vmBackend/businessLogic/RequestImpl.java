@@ -99,7 +99,7 @@ public class RequestImpl extends DBConnection{
 		History history = new History();
 		java.sql.Timestamp date = new java.sql.Timestamp(
 				new java.util.Date().getTime());
-		OsImpl osimpl = new OsImpl();
+		OSImpl osimpl = new OSImpl();
 		NotificationImpl notificationImpl = new NotificationImpl();
 		HistoryImpl historyImpl = new HistoryImpl();
 
@@ -109,7 +109,7 @@ public class RequestImpl extends DBConnection{
 
 			os.setOsName(request.getOs_type());
 			os.setOs_user_id(request.getRequest_user_id());
-			osimpl.insert(os);
+//			osimpl.insert(os);
 
 			notification.setContent("You created new request");
 			notification.setDate(date);
@@ -126,7 +126,7 @@ public class RequestImpl extends DBConnection{
 			history.setHistory_UserId(employee.getUserId());
 			history.setUserType(employee.getType());
 
-			historyImpl.insert(history);
+//			historyImpl.insert(history);
 
 			// insert os
 			// create notification depend on user type
@@ -141,7 +141,7 @@ public class RequestImpl extends DBConnection{
 	public static Request updateTicket(Request request) {
 
 		RequestHome requestHome = new RequestHome();
-		OsImpl osimpl = new OsImpl();
+//		OsImpl osimpl = new OsImpl();
 		NotificationImpl notificationImpl = new NotificationImpl();
 		HistoryImpl historyImpl = new HistoryImpl();
 
@@ -159,7 +159,7 @@ public class RequestImpl extends DBConnection{
 
 			os.setOsName(request.getOs_type());
 			os.setOs_user_id(request.getRequest_user_id());
-			osimpl.update(os);
+//			osimpl.update(os);
 
 			notification.setContent("You created new request");
 			notification.setDate(date);
@@ -176,7 +176,7 @@ public class RequestImpl extends DBConnection{
 			history.setHistory_UserId(employee.getUserId());
 			history.setUserType(employee.getType());
 
-			historyImpl.insert(history);
+//			historyImpl.insert(history);
 
 			// update os
 			// create notification to user (depend on user type)
@@ -191,7 +191,7 @@ public class RequestImpl extends DBConnection{
 	public static Request deleteTicket(Request request) {
 
 		RequestHome requestHome = new RequestHome();
-		OsImpl osimpl = new OsImpl();
+//		OsImpl osimpl = new OsImpl();
 		NotificationImpl notificationImpl = new NotificationImpl();
 		HistoryImpl historyImpl = new HistoryImpl();
 		// OSHome osHome = new OSHome();
@@ -207,7 +207,7 @@ public class RequestImpl extends DBConnection{
 		if (facade.delete(request)) { // delete complete
 			os.setOsName(request.getOs_type());
 			os.setOs_user_id(request.getRequest_user_id());
-			osimpl.delete(os);
+//			osimpl.delete(os);
 
 			notification.setContent("You created new request");
 			notification.setDate(date);
@@ -224,7 +224,7 @@ public class RequestImpl extends DBConnection{
 			history.setHistory_UserId(employee.getUserId());
 			history.setUserType(employee.getType());
 
-			historyImpl.insert(history);
+//			historyImpl.insert(history);
 			// delete this request from os table
 			// create notification to user (depend on user type)
 			// store event in history table
@@ -267,7 +267,7 @@ public class RequestImpl extends DBConnection{
 			history.setHistory_UserId(employee.getUserId());
 			history.setUserType(employee.getType());
 
-			historyImpl.insert(history);
+//			historyImpl.insesrt(history);
 			// select os type
 			// store event in history table
 
