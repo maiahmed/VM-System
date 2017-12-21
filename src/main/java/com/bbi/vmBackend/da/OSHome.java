@@ -83,13 +83,11 @@ public class OSHome extends DBConnection implements DaoHome {
 			preparedStmt.setString(2, os.getOsExtra_OS());
 			preparedStmt.setInt(3, os.getOsManager());
 
-			preparedStmt.executeUpdate();
+			entered = preparedStmt.executeUpdate() > 0;
 			conn.close();
-			entered = true;
 
 		} catch (SQLException sq) {
 			System.out.println("Error in inserting function ");
-			entered = false;
 		}
 		return entered;
 	}
@@ -105,12 +103,10 @@ public class OSHome extends DBConnection implements DaoHome {
 			preparedStmt.setString(2, os.getOsExtra_OS());
 			preparedStmt.setInt(3, os.getOsManager());
 			preparedStmt.setInt(4, os.getOsId());
-			preparedStmt.executeUpdate();
+			entered = preparedStmt.executeUpdate() > 0;
 			conn.close();
-			entered = true;
 		} catch (SQLException sq) {
 			System.out.println("Error in updating the OS !");
-			entered = false;
 		}
 		return entered;
 	}
@@ -124,12 +120,10 @@ public class OSHome extends DBConnection implements DaoHome {
 		try {
 			PreparedStatement preparedStmt = conn.prepareStatement(deleteQuery);
 			preparedStmt.setInt(1, os.getOsId());
-			preparedStmt.executeUpdate();
+			entered = preparedStmt.executeUpdate() > 0;
 			conn.close();
-			entered = true;
 		} catch (SQLException sq) {
 			System.out.println("Error in deleting the selected id !");
-			entered = false;
 		}
 		return entered;
 	}

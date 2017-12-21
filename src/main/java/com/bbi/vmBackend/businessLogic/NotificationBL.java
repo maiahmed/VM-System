@@ -5,15 +5,16 @@ import java.util.List;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.facade.DataAccessFacade;
 
-public class OSImpl {
+public class NotificationBL {
+
 	DataAccessFacade dataAccessFacade = new DataAccessFacade();
 
-	public List<DaoObject> listAllOSfBL() {
-		return dataAccessFacade.listAll(6); // list all notification
+	public List<DaoObject> listAllNotifBL() {
+		return dataAccessFacade.listAll(5); // list all notification
 
 	}
 
-	public boolean insertOSBL(DaoObject obj) {
+	public boolean insertNotifBL(DaoObject obj) {
 		if (dataAccessFacade.insert(obj))
 			return true;
 		else
@@ -21,23 +22,22 @@ public class OSImpl {
 
 	}
 
-	public boolean updateOSBL(DaoObject obj) {
+	public boolean updateNotifBL(DaoObject obj) {
 		if (dataAccessFacade.update(obj))
 			return true;
 		else
 			return false;
 	}
 
-	public boolean deleteOSBL(DaoObject obj) {
+	public boolean deleteNotifBL(DaoObject obj) {
 		if (dataAccessFacade.delete(obj))
 			return true;
 		else
 			return false;
 	}
 
-	public DaoObject getOSByIdBL(DaoObject obj) {
+	public DaoObject getNotifByIdBL(DaoObject obj) {
 		return dataAccessFacade.getById(obj);
 
 	}
-
 }
