@@ -82,7 +82,6 @@ public class HistoryHome extends SingletonDBConnection implements DaoHome {
 	@Override
 	public boolean insert(DaoObject obj) {
 		boolean entered = false;
-
 		History history = (History) obj;
 		
 		try {
@@ -96,13 +95,11 @@ public class HistoryHome extends SingletonDBConnection implements DaoHome {
 			preparedStmt.setInt(5, history.getHistory_RequestId());
 			preparedStmt.setString(6, history.getStatus());
 
-			preparedStmt.executeUpdate();
+			entered = preparedStmt.executeUpdate() > 0;
 			conn.close();
-			entered = true;
 
 		} catch (SQLException sq) {
 			System.out.println("Error during inserting history ! ");
-			entered = false;
 		}
 		return entered;
 	}
@@ -110,7 +107,6 @@ public class HistoryHome extends SingletonDBConnection implements DaoHome {
 	@Override
 	public boolean update(DaoObject obj) {
 		boolean entered = false;
-	
 		Connection conn = getConnection();
 		History history = (History) obj;
 		try {
@@ -121,12 +117,10 @@ public class HistoryHome extends SingletonDBConnection implements DaoHome {
 			preparedStmt.setInt(4, history.getHistory_UserId());
 			preparedStmt.setInt(5, history.getHistory_RequestId());
 			preparedStmt.setString(6, history.getStatus());
-			preparedStmt.executeUpdate();
+			entered = preparedStmt.executeUpdate() > 0;
 			conn.close();
-			entered = true;
 		} catch (SQLException sq) {
 			System.out.println("Error in updatting");
-			entered = false;
 		}
 
 		return entered;
@@ -143,11 +137,10 @@ public class HistoryHome extends SingletonDBConnection implements DaoHome {
 			preparedStmt.setInt(1, history.getId());
 			preparedStmt.executeUpdate();
 			conn.close();
-			entered = true;
+			entered = preparedStmt.executeUpdate() > 0;
 
 		} catch (SQLException sq) {
 			System.out.println("Error during deleting");
-			entered = false;
 		}
 		return entered;
 	}

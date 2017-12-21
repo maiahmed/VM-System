@@ -17,7 +17,7 @@ public class NotificationsHome extends SingletonDBConnection implements DaoHome 
 	@Override
 	public List<DaoObject> listAll() {
 		sql = "SELECT * FROM notification ";
-		Connection conn =  getConnection();
+		Connection conn = getConnection();
 		Notifications notification = new Notifications();
 		List<DaoObject> NotificationsList = new ArrayList<>();
 		ResultSet rs;
@@ -107,12 +107,10 @@ public class NotificationsHome extends SingletonDBConnection implements DaoHome 
 			preparedStmt.setString(10, notification.getExpired());
 			preparedStmt.setString(11, notification.getExtra_Notif());
 
-			preparedStmt.executeUpdate();
+			entered = preparedStmt.executeUpdate() > 0;
 			conn.close();
-			entered = true;
 		} catch (SQLException sq) {
 			System.out.println("Error in inserting function ");
-			entered = false;
 		}
 		return entered;
 	}
@@ -139,13 +137,11 @@ public class NotificationsHome extends SingletonDBConnection implements DaoHome 
 			preparedStmt.setString(11, notification.getExtra_Notif());
 			preparedStmt.setInt(12, notification.getId());
 
-			preparedStmt.executeUpdate();
+			entered = preparedStmt.executeUpdate() > 0;
 			conn.close();
-			entered = true;
 
 		} catch (SQLException sq) {
 			System.out.println("Error in updating the notification !");
-			entered = false;
 		}
 		return entered;
 	}
@@ -159,27 +155,25 @@ public class NotificationsHome extends SingletonDBConnection implements DaoHome 
 		try {
 			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, notification.getId());
-			preparedStmt.executeUpdate();
+			entered = preparedStmt.executeUpdate() > 0;
 			conn.close();
-			entered = true;
 
 		} catch (SQLException sq) {
 			System.out.println("Error in deleting the notification !");
-			entered = false;
 		}
 		return entered;
 	}
 
-	public List<DaoObject> EmployeeNotification(DaoObject obj) {
+	public List<DaoObject> EmployeeNotification(String loginUserId) {
 		sql = "SELECT * FROM notification " + "WHERE notif_user_id=? ";
 		Connection conn = getConnection();
 
-		Notifications EmployeeNotification = (Notifications)obj;
+		Notifications EmployeeNotification = new Notifications();
 		List<DaoObject> EmplNotificationsList = new ArrayList<>();
 		ResultSet rs = null;
 		try {
 			PreparedStatement preparedStmt = conn.prepareStatement(sql);
-			preparedStmt.setInt(1, EmployeeNotification.getNoti_UserId());
+			preparedStmt.setString(1, loginUserId);
 			rs = preparedStmt.executeQuery();
 
 			while (rs.next()) {
