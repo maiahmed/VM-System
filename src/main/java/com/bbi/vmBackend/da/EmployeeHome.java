@@ -149,4 +149,9 @@ public class EmployeeHome extends DBConnection implements DaoHome {
 		return entered;
 	}
 
+	public  Employee getEmployee(String userName, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
