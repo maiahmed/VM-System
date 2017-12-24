@@ -9,9 +9,32 @@ public class SingletonDBConnection {
 	private final static String USERNAME = "root";
 	private final static String PASSWORD = "20130334";
 	private Connection jdbcConnection;
-	private SingletonDBConnection instance;
+	private static SingletonDBConnection instance ;
 
-	private void DBConnection() {
+	public void DBConnection() {
+
+	}
+
+	
+	
+	public SingletonDBConnection getInstance() {
+		System.out.println("--------------ana f instance------------------s");
+		if (instance == null)
+			instance = new SingletonDBConnection();
+		else{
+			try {
+				if (instance.getConnection().isClosed()) {
+					instance = new SingletonDBConnection();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return instance;
+	}
+
+	public Connection getConnection() {
+		System.out.println("======i'm hereeeeeeeeeeeeeeeeeeeeee======");
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			this.jdbcConnection = DriverManager.getConnection(DBURL, USERNAME,
@@ -25,24 +48,6 @@ public class SingletonDBConnection {
 					+ e.getMessage());
 			e.printStackTrace();
 		}
-
-	}
-
-	public SingletonDBConnection getInstance() {
-		if (instance == null)
-			instance = new SingletonDBConnection();
-		else
-			try {
-				if (instance.getConnection().isClosed()) {
-					instance = new SingletonDBConnection();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		return instance;
-	}
-
-	public Connection getConnection() {
-		return jdbcConnection;
+		return this.jdbcConnection;
 	}
 }

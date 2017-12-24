@@ -10,6 +10,7 @@ import com.bbi.vmBackend.da.NotificationsHome;
 import com.bbi.vmBackend.da.OSHome;
 import com.bbi.vmBackend.da.RequestHome;
 import com.bbi.vmBackend.da.SessionHome;
+import com.bbi.vmBackend.da.SingletonDBConnection;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.Employee;
 import com.bbi.vmBackend.da.dao.Session;
@@ -23,6 +24,8 @@ public class DataAccessFacade {
 	private OSHome osHome;
 	private RequestHome requestHome;
 	private SessionHome sessionHome;
+	SingletonDBConnection jdbc ;
+
 
 	public DataAccessFacade() {
 		commentHome = new CommentHome();
@@ -33,6 +36,8 @@ public class DataAccessFacade {
 		osHome = new OSHome();
 		requestHome = new RequestHome();
 		sessionHome = new SessionHome();
+		jdbc  = new SingletonDBConnection();
+
 
 	}
 

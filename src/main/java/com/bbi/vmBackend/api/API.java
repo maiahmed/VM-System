@@ -11,6 +11,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.simple.JSONObject;
+
 import com.bbi.vmBackend.businessLogic.Authentication;
 import com.bbi.vmBackend.da.dao.Session;
 
@@ -19,35 +21,38 @@ public class API {
 	// http://localhost:8080/VM_Syatem/rest/api/
 
 	@POST
-
-	@Path("/{userName}/{password}")
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-
-	public Response login(@PathParam("userName") String userName,
-			@PathParam("password") String password) {
+	public Response login(JSONObject inputJsonObj) {
 		System.out.println("-----------i'm in Login-------------------");
 		Validation val = new Validation();
 		Response response = null;
+		String userName = (String) inputJsonObj.get("userName");
+		String password = (String) inputJsonObj.get("password");
+		System.out.println("----> " + userName + " " + password);
 		if (val.loginValidation(userName, password)) {
 			Authentication authentication = new Authentication();
-			Session session = authentication
-					.authenticate(userName, password);
-
-			Response.ResponseBuilder rb = Response.ok("the Login response");
-			response = rb.header("session_id", session.getSessionId())
-					.header("user_id", session.getUser_Id())
-					.header("token", session.getToken())
-					.header("key", session.getKey()).build();
+			Session session = authentication.authenticate(userName, password);
+			if (session != null) {
+				Response.ResponseBuilder rb = Response.ok("the Login response");
+				response = rb.header("session_id", session.getSessionId())
+						.header("user_id", session.getUser_Id())
+						.header("token", session.getToken())
+						.header("key", session.getKey()).build();
+			}
 		} else {
+
 			System.out.println("-------------user not valid--------------");
 		}
 		return response;
 	}
+
 	@GET
 	@Path("/{user_id}/{token}/{key}/{lastInsertion}/{lastUpdate}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Session getNotification(@PathParam("user_id") int user_id, @PathParam("token") int token,
-			@PathParam("key") String key, @PathParam("lastInsertion") Date lastInsertion,
+	public Session getNotification(@PathParam("user_id") int user_id,
+			@PathParam("token") int token, @PathParam("key") String key,
+			@PathParam("lastInsertion") Date lastInsertion,
 			@PathParam("lastUpdate") Date lastUpdate) {
 
 		Session session = new Session();

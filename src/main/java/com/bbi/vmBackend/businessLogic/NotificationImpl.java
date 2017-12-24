@@ -11,19 +11,5 @@ public class NotificationImpl {
 
 	}
 
-	public int getSession(Session session) {
-		int nextToken = -1;
-		DataAccessFacade dataAccessFacade = new DataAccessFacade();
-		
-		if ((Session) dataAccessFacade.getById(session) != null) {
-			nextToken = session.getToken()+1;
-			session.setToken(nextToken);
-			if (dataAccessFacade.update(session)){
-			}			
-		}
-
-		
-	 return nextToken;
-	}
-
+	
 }
