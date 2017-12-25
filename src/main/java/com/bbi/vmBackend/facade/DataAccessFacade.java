@@ -11,6 +11,7 @@ import com.bbi.vmBackend.da.OSHome;
 import com.bbi.vmBackend.da.RequestHome;
 import com.bbi.vmBackend.da.SessionHome;
 import com.bbi.vmBackend.da.SingletonDBConnection;
+import com.bbi.vmBackend.da.dao.Comment;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.Employee;
 import com.bbi.vmBackend.da.dao.Session;
@@ -24,8 +25,7 @@ public class DataAccessFacade {
 	private OSHome osHome;
 	private RequestHome requestHome;
 	private SessionHome sessionHome;
-	SingletonDBConnection jdbc ;
-
+	SingletonDBConnection jdbc;
 
 	public DataAccessFacade() {
 		commentHome = new CommentHome();
@@ -36,8 +36,7 @@ public class DataAccessFacade {
 		osHome = new OSHome();
 		requestHome = new RequestHome();
 		sessionHome = new SessionHome();
-		jdbc  = new SingletonDBConnection();
-
+		jdbc = new SingletonDBConnection();
 
 	}
 
@@ -74,8 +73,12 @@ public class DataAccessFacade {
 	}
 
 	public DaoObject getById(DaoObject obj) {
-		if (obj instanceof CommentHome)
+
+		System.out.println("----ana f el facade====" + obj.getClass());
+		if (obj instanceof Comment){
+			System.out.println("----ana f comm ====");
 			return commentHome.getById(obj);
+		}
 		else if (obj instanceof EmployeeHome)
 			return employeeHome.getById(obj);
 		else if (obj instanceof HistoryHome)
@@ -88,11 +91,13 @@ public class DataAccessFacade {
 			return osHome.getById(obj);
 		else if (obj instanceof RequestHome)
 			return requestHome.getById(obj);
-		else if (obj instanceof SessionHome)
+		else if (obj instanceof Session) {
+			Session session1 = (Session) obj;
+			System.out.println("=======ana f iffffff " + session1.getUser_Id());
 			return sessionHome.getById(obj);
-
-		else
+		} else {
 			return null;
+		}
 
 	}
 
@@ -125,7 +130,7 @@ public class DataAccessFacade {
 	}
 
 	public boolean update(DaoObject obj) {
-		if (obj instanceof CommentHome)
+		if (obj instanceof Comment)
 			return commentHome.update(obj);
 		else if (obj instanceof EmployeeHome)
 			return employeeHome.update(obj);
@@ -139,8 +144,11 @@ public class DataAccessFacade {
 			return osHome.update(obj);
 		else if (obj instanceof RequestHome)
 			return requestHome.update(obj);
-		else if (obj instanceof SessionHome)
+		else if (obj instanceof Session) {
+
+			System.out.println("ana b update ");
 			return sessionHome.update(obj);
+		}
 
 		else
 			return false;
@@ -148,7 +156,7 @@ public class DataAccessFacade {
 	}
 
 	public boolean delete(DaoObject obj) {
-		if (obj instanceof CommentHome)
+		if (obj instanceof Comment)
 			return commentHome.delete(obj);
 		else if (obj instanceof EmployeeHome)
 			return employeeHome.delete(obj);
@@ -169,6 +177,5 @@ public class DataAccessFacade {
 			return false;
 
 	}
-
 
 }

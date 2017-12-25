@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bbi.vmBackend.da.dao.*;
+import com.mysql.jdbc.Statement;
 import com.sun.xml.bind.v2.runtime.Name;
 
 public class EmployeeHome extends DBConnection implements DaoHome {
@@ -32,21 +33,40 @@ public class EmployeeHome extends DBConnection implements DaoHome {
 		session.setKey("ABC"); // will increase each char by 3;
 		session.setUser_Id(employee.getUserId());
 		session.setToken(employee.getUserId()); // will increase 1
+		
 		// session.setLastInsertion());
 		// session.setLastUpdate(lastUpdate);
 
 		try {
 			Connection conn = getConnection();
 			PreparedStatement preparedStmt = conn
-					.prepareStatement(INSERTNEWSESSION);
+					.prepareStatement(INSERTNEWSESSION, Statement.RETURN_GENERATED_KEYS);
 			preparedStmt.setInt(1, session.getUser_Id());
 			preparedStmt.setInt(2, session.getToken());
 			preparedStmt.setString(3, session.getKey());
 			preparedStmt.setDate(4, (Date) session.getLastInsertion());
 			preparedStmt.setDate(5, (Date) session.getLastUpdate());
+			
 			System.out.println("SSS " + preparedStmt);
+			preparedStmt.executeUpdate() ;
+			System.out.println("---------------------");
+			ResultSet rs = preparedStmt.getGeneratedKeys();
+			System.out.println("---------------------");
+			int generatedKey = 0;
+			if (rs.next()) {
+			    generatedKey = rs.getInt(1);
+				  session.setSessionId(generatedKey);
 
-			preparedStmt.executeUpdate();
+			}
+			System.out.println("Inserted record's ID: " + generatedKey);
+
+//			if (rs.next()) {
+//				  System.out.println("npooooooooooo ");
+//
+//			  int newId = rs.getInt("sessionId");
+//			  session.setSessionId(newId);
+//			  System.out.println("new "+newId);
+//			}
 			conn.close();
 
 		} catch (SQLException sq) {

@@ -17,10 +17,10 @@ public class SessionHome extends SingletonDBConnection implements DaoHome {
 	private final static String INSERTQUERY = "INSERT INTO session (user_id ,token , key , lastInsertion , lastUpdate ) "
 			+ "VALUES (?,?,?,?,?)";
 	private final static String SELECTQUERY = "SELECT * FROM session";
-	private final static String UPDATEQUERY = "UPDATE session set token=? , key=? , lastInsertion=? , lastUpdate=?"
+	private final static String UPDATEQUERY = "UPDATE session set token=? , session.key=? , lastInsertion=? , lastUpdate=?"
 			+ " WHERE user_id=?";
 	private final static String DELETEQUERY = "DELETE FROM session " + "WHERE user_id = ?";
-	private final static String GETONEQUERY = "SELECT * FROM session Where session_id=?";
+	private final static String GETONEQUERY = "SELECT * FROM session Where sessionid=?";
 
 	@Override
 	public List<DaoObject> listAll() {
@@ -58,15 +58,23 @@ public class SessionHome extends SingletonDBConnection implements DaoHome {
 		// private final static String GETONEQUERY = "SELECT * FROM session " + "Where
 		// user_id=?";
 
+		
 		Connection conn = getConnection();
 		ResultSet rs;
 		Session session = (Session) obj;
+		System.out.println("-----ana f session getId" + session.getUser_Id()+" sss");
+
 		try {
 			PreparedStatement preparedStmt = conn.prepareStatement(GETONEQUERY);
 			preparedStmt.setInt(1, session.getUser_Id());
-			rs = preparedStmt.executeQuery();
+			System.out.println(preparedStmt);
 
-			while (rs.next()) {
+			rs = preparedStmt.executeQuery();
+			
+			if(!rs.next()){
+				System.out.println("no Datae");
+			}
+			else{
 
 				session.setUser_Id(rs.getInt("user_id"));
 				session.setToken(rs.getInt("token"));
@@ -116,6 +124,8 @@ public class SessionHome extends SingletonDBConnection implements DaoHome {
 		Connection conn = getConnection();
 		boolean entered = false;
 		Session session = (Session) obj;
+		System.out.println(" -=-=-=->>> "+session.getUser_Id());
+
 		try {
 			PreparedStatement preparedStmt = conn.prepareStatement(UPDATEQUERY);
 			preparedStmt.setInt(1, session.getToken());
@@ -123,7 +133,7 @@ public class SessionHome extends SingletonDBConnection implements DaoHome {
 			preparedStmt.setDate(3, (Date) session.getLastInsertion());
 			preparedStmt.setDate(4, (Date) session.getLastUpdate());
 			preparedStmt.setInt(5, session.getUser_Id());
-
+			System.out.println("== "+preparedStmt);
 			entered = preparedStmt.executeUpdate() > 0;
 			conn.close();
 		} catch (SQLException sq) {
