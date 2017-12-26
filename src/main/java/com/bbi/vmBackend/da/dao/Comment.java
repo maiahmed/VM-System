@@ -70,4 +70,8 @@ public class Comment implements DaoObject {
 		this.comment_request_id = comment_request_id;
 	}
 
+	public Comment() {
+		// TODO Auto-generated constructor stub
+	}
+
 }

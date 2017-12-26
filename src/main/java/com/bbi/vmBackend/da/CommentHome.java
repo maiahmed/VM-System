@@ -17,21 +17,23 @@ import com.bbi.vmBackend.da.dao.Host;
 import com.bbi.vmBackend.da.dao.OS;
 import com.bbi.vmBackend.da.dao.Request;
 
-public  class CommentHome extends DBConnection  implements DaoHome {
+public class CommentHome extends DBConnection implements DaoHome {
 	private final static String INSERTQUERY = "INSERT INTO `comment` (`content`, `date`, `comment_user_id`, `comment_request_id`) "
 			+ "VALUES (?,?,?,?);";
 	private final static String SELECTQUERY = "SELECT * FROM request;";
 	private final static String UPDATEQUERY = "UPDATE `comment` SET `content`=? WHERE `comment_id`=?";
 	private final static String DELETEQUERY = "DELETE FROM `comment` WHERE `comment_id`=? ;";
-	private final static String GETONEQUERY = "SELECT * FROM host WHERE host_id = ?";
+	private final static String GETONEQUERY = "SELECT * FROM comment WHERE comment_user_id = ?";
+
 	@Override
 	public boolean insert(DaoObject obj) {
-		Comment comment = (Comment)obj;
-		
+		Comment comment = (Comment) obj;
+
 		try {
 			Connection jdbcConnection = getConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(INSERTQUERY);
-			statement.setString(1,  comment.getContent());
+			PreparedStatement statement = jdbcConnection
+					.prepareStatement(INSERTQUERY);
+			statement.setString(1, comment.getContent());
 			statement.setDate(2, (Date) comment.getDate());
 			statement.setInt(3, comment.getComment_user_id());
 			statement.setInt(4, comment.getComment_request_id());
@@ -51,10 +53,10 @@ public  class CommentHome extends DBConnection  implements DaoHome {
 
 	@Override
 	public List<DaoObject> listAll() {
-		
+
 		List<DaoObject> listComments = new ArrayList<DaoObject>();
 		try {
-			
+
 			Connection jdbcConnection = getConnection();
 			Statement statement = jdbcConnection.createStatement();
 			ResultSet resultSet = statement.executeQuery(SELECTQUERY);
@@ -65,7 +67,8 @@ public  class CommentHome extends DBConnection  implements DaoHome {
 				Date date = resultSet.getDate("date");
 				int comment_user_id = resultSet.getInt("comment_user_id");
 				int comment_request_id = resultSet.getInt("comment_request_id");
-				Comment comment = new Comment(comment_id, content, date, comment_user_id, comment_request_id);
+				Comment comment = new Comment(comment_id, content, date,
+						comment_user_id, comment_request_id);
 				listComments.add(comment);
 			}
 
@@ -88,15 +91,16 @@ public  class CommentHome extends DBConnection  implements DaoHome {
 
 		try {
 			Connection jdbcConnection = getConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(UPDATEQUERY);
+			PreparedStatement statement = jdbcConnection
+					.prepareStatement(UPDATEQUERY);
 			statement.setString(1, comment.getContent());
 			statement.setInt(2, comment.getComment_id());
-
+			System.out.println(statement);
 			boolean rowUpdated = statement.executeUpdate() > 0;
 			statement.close();
 			jdbcConnection.close();
 			return rowUpdated;
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,12 +112,14 @@ public  class CommentHome extends DBConnection  implements DaoHome {
 	@Override
 	public boolean delete(DaoObject obj) {
 		Comment comment = (Comment) obj;
-
+		System.out.println("=-ana f comment delete " + comment.getContent()
+				+ " " + comment.getComment_user_id());
 		try {
 			Connection jdbcConnection = getConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(DELETEQUERY);
+			PreparedStatement statement = jdbcConnection
+					.prepareStatement(DELETEQUERY);
 			statement.setInt(1, comment.getComment_id());
-
+			System.out.println(statement);
 			boolean rowUpdated = statement.executeUpdate() > 0;
 			statement.close();
 			jdbcConnection.close();
@@ -129,23 +135,26 @@ public  class CommentHome extends DBConnection  implements DaoHome {
 	@Override
 	public DaoObject getById(DaoObject obj) {
 		Comment comment = (Comment) obj;
-		
+		System.out.println("rrrrrrr " + comment.getComment_user_id());
 
 		try {
 			Connection jdbcConnection = getConnection();
-			PreparedStatement statement = jdbcConnection.prepareStatement(GETONEQUERY);
-			statement.setInt(1, comment.getComment_id());
-
+			PreparedStatement statement = jdbcConnection
+					.prepareStatement(GETONEQUERY);
+			statement.setInt(1, comment.getComment_user_id());
+			System.out.println(statement);
 			ResultSet resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
+				System.out.println("ana gwa el res next");
 				int comment_id = resultSet.getInt("comment_id");
 				String content = resultSet.getString("content");
 				Date date = resultSet.getDate("date");
 				int comment_user_id = resultSet.getInt("comment_user_id");
 				int comment_request_id = resultSet.getInt("comment_request_id");
-				
-				comment = new Comment(comment_id, content, date, comment_user_id, comment_request_id);
+
+				comment = new Comment(comment_id, content, date,
+						comment_user_id, comment_request_id);
 			}
 
 			resultSet.close();
@@ -156,8 +165,6 @@ public  class CommentHome extends DBConnection  implements DaoHome {
 			e.printStackTrace();
 			return null;
 		}
-
-		
 
 	}
 }
