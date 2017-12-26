@@ -87,7 +87,7 @@ public class API {
 	}
 
 	@GET
-	@Path("allEmployees")
+	@Path("/{user_id}/{token}/{key}/{session_id}/allEmployees")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<DaoObject> getAllEmployees(@PathParam("user_id") int user_id, @PathParam("token") int token,
 			@PathParam("key") String key, @PathParam("sessionId") int sessionId) {
