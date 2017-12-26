@@ -26,11 +26,7 @@ public class DataAccessFacade {
 	private OSHome osHome;
 	private RequestHome requestHome;
 	private SessionHome sessionHome;
-<<<<<<< HEAD
 	private LoginHome loginHome;
-=======
-	SingletonDBConnection jdbc;
->>>>>>> d3122d35e7991d92e1eeb6a3ea543170c85d7cb1
 
 	public DataAccessFacade() {
 		commentHome = new CommentHome();
@@ -41,12 +37,8 @@ public class DataAccessFacade {
 		osHome = new OSHome();
 		requestHome = new RequestHome();
 		sessionHome = new SessionHome();
-<<<<<<< HEAD
 		loginHome = new LoginHome();
-=======
-		jdbc = new SingletonDBConnection();
->>>>>>> d3122d35e7991d92e1eeb6a3ea543170c85d7cb1
-
+	
 	}
 
 	/////////////////////////////////////////////////
@@ -122,7 +114,7 @@ public class DataAccessFacade {
 	}
 
 	public boolean insert(DaoObject obj) {
-		if (obj instanceof CommentHome)
+		if (obj instanceof Comment)
 			return commentHome.insert(obj);
 		else if (obj instanceof EmployeeHome)
 			return employeeHome.insert(obj);

@@ -37,7 +37,7 @@ public class CommentHome extends DBConnection implements DaoHome {
 			statement.setDate(2, (Date) comment.getDate());
 			statement.setInt(3, comment.getComment_user_id());
 			statement.setInt(4, comment.getComment_request_id());
-
+			System.out.println(statement);
 			boolean rowInserted = statement.executeUpdate() > 0;
 			statement.close();
 			jdbcConnection.close();

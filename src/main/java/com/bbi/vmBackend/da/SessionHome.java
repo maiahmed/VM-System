@@ -124,7 +124,7 @@ public class SessionHome extends SingletonDBConnection implements DaoHome {
 		Connection conn = getConnection();
 		boolean entered = false;
 		Session session = (Session) obj;
-		System.out.println(" -=-=-=->>> "+session.getUser_Id());
+		System.out.println(" -=-=-=->>> "+session.getUser_Id()+" "+session.getToken());
 
 		try {
 			PreparedStatement preparedStmt = conn.prepareStatement(UPDATEQUERY);

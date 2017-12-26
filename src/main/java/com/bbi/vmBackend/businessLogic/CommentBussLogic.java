@@ -63,4 +63,24 @@ public class CommentBussLogic {
 		}
 	}
 
+	
+	public  boolean insertComment(Comment comment) {
+
+		DataAccessFacade facade = new DataAccessFacade();
+		// meen el user elly 3ml el request dah (request_user_id)?
+		System.out.println("comment----))) > " + comment.getComment_user_id());
+		java.sql.Timestamp date = new java.sql.Timestamp(
+				new java.util.Date().getTime());
+		comment.setDate(date);
+		boolean check = facade.insert(comment);
+		if (check) { // update completes
+
+			// notificationsHome.insert(notification);
+			// history
+			System.out.println("ana la2eet el comment w update-o");
+			return true;
+		} else { // insert failed
+			return false;
+		}
+	}
 }

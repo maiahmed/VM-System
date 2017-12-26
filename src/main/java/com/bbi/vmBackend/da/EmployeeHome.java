@@ -5,12 +5,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.bbi.vmBackend.da.dao.*;
-import com.mysql.jdbc.Statement;
-import com.sun.xml.bind.v2.runtime.Name;
 
 public class EmployeeHome extends DBConnection implements DaoHome {
 	private final static String INSERTQUERY = "INSERT INTO employee (name, email, password, type, extra_impl, manager) "
@@ -18,14 +17,9 @@ public class EmployeeHome extends DBConnection implements DaoHome {
 	private final static String SELECTQUERY = "SELECT * FROM employee";
 	private final static String UPDATEQUERY = "UPDATE employee set name=? ,email=? , password=? , type=? , extra_impl=? , manager=?"
 			+ " WHERE user_id=?";
-<<<<<<< HEAD
 	private final static String DELETEQUERY = "DELETE FROM employee " + "WHERE user_id = ?";
 	private final static String GETONEQUERY = "SELECT * FROM employee " + "Where user_id=?";
-=======
-	private final static String DELETEQUERY = "DELETE FROM employee "
-			+ "WHERE user_id = ?";
-	private final static String GETONEQUERY = "SELECT * FROM employee "
-			+ "Where user_id=?";
+
 	private final static String GETEMPLOYEEINFO = "SELECT user_id , name , email , type , manager FROM employee where name=? and password = ?";
 	private final static String INSERTNEWSESSION = "INSERT INTO session (user_Id, token,  session.key, lastInsertion, lastUpdate) values (?,?,?,?,?)";
 
@@ -113,7 +107,6 @@ public class EmployeeHome extends DBConnection implements DaoHome {
 
 		return employee;
 	}
->>>>>>> d3122d35e7991d92e1eeb6a3ea543170c85d7cb1
 
 	@Override
 	public List<DaoObject> listAll() {

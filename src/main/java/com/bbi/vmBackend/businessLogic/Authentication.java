@@ -3,23 +3,13 @@ package com.bbi.vmBackend.businessLogic;
 import com.bbi.vmBackend.da.dao.Employee;
 import com.bbi.vmBackend.da.dao.Session;
 import com.bbi.vmBackend.facade.DataAccessFacade;
-<<<<<<< HEAD
 
-public class Authentication {  //into business logic
-	DataAccessFacade dataAccessFacade = new DataAccessFacade();
-
-	public Session authenticate(String userName, String password) { // get employee info from facade
-		Employee employee = dataAccessFacade.checkAuthentication(userName, password); // get authorization
-		
-=======
-//1448
 public class Authentication {
 	DataAccessFacade dataAccessFacade = new DataAccessFacade();
 
 	public Session authenticate(String userName, String password) { // get employee info from facade
-		Employee employee = dataAccessFacade.facadeEmplyeeExist(userName, password); // get authorization
+		Employee employee = dataAccessFacade.checkAuthentication(userName, password); // get authorization
 
->>>>>>> d3122d35e7991d92e1eeb6a3ea543170c85d7cb1
 		Session session = new Session();
 		if (employee != null){
 			session = dataAccessFacade.facadeGetSession(employee);

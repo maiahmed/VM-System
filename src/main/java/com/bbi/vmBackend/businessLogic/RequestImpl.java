@@ -73,7 +73,7 @@ public class RequestImpl extends DBConnection{
 		java.sql.Timestamp date = new java.sql.Timestamp(
 				new java.util.Date().getTime());
 		Notifications notification = new Notifications();
-		NotificationBL notificationBL = new NotificationBL();
+		NotificationImpl notificationImpl = new NotificationImpl();
 		
 		notification.setContent("Reminder");
 		notification.setDate(date);
@@ -85,7 +85,7 @@ public class RequestImpl extends DBConnection{
 		notification.setExpired(request.getExpiring_date().toString());
 		notification.setReminder("1");
 
-		notificationBL.insert(notification);
+		notificationImpl.insert(notification);
 	}
 
 	public static Request createTicket(Request request) {
@@ -100,8 +100,8 @@ public class RequestImpl extends DBConnection{
 		java.sql.Timestamp date = new java.sql.Timestamp(
 				new java.util.Date().getTime());
 		OSImpl osimpl = new OSImpl();
-		NotificationBL notificationBL = new NotificationBL();
-		HistoryBL historyBL = new HistoryBL();
+		NotificationImpl notificationImpl = new NotificationImpl();
+//		HistoryImpl historyImpl = new HistoryImpl();
 
 		// meen el user elly 3ml el request dah (request_user_id)?
 
@@ -119,7 +119,7 @@ public class RequestImpl extends DBConnection{
 			notification.setSeen("0");
 			notification.setType("new erquest");
 
-			notificationBL.insert(notification);
+			notificationImpl.insert(notification);
 			// notificationsHome.insert(notification);
 			history.setDate(date);
 			history.setHistory_RequestId(request.getId());
@@ -142,8 +142,8 @@ public class RequestImpl extends DBConnection{
 
 		RequestHome requestHome = new RequestHome();
 //		OsImpl osimpl = new OsImpl();
-		NotificationBL notificationBL = new NotificationBL();
-		HistoryBL historyBL = new HistoryBL();
+		NotificationImpl notificationImpl = new NotificationImpl();
+//		HistoryImpl historyImpl = new HistoryImpl();
 
 		// OSHome osHome = new OSHome();
 		Notifications notification = new Notifications();
@@ -169,7 +169,7 @@ public class RequestImpl extends DBConnection{
 			notification.setSeen("1");
 			notification.setType("update request");
 
-			notificationBL.insert(notification);
+			notificationImpl.insert(notification);
 
 			history.setDate(date);
 			history.setHistory_RequestId(request.getId());
@@ -192,8 +192,8 @@ public class RequestImpl extends DBConnection{
 
 		RequestHome requestHome = new RequestHome();
 //		OsImpl osimpl = new OsImpl();
-		NotificationBL notificationBL = new NotificationBL();
-		HistoryBL historyBL = new HistoryBL();
+		NotificationImpl notificationImpl = new NotificationImpl();
+//		HistoryImpl historyImpl = new HistoryImpl();
 		// OSHome osHome = new OSHome();
 		Notifications notification = new Notifications();
 		// NotificationsHome notificationsHome = new NotificationsHome();
@@ -217,7 +217,7 @@ public class RequestImpl extends DBConnection{
 			notification.setSeen("1");
 			notification.setType("delete request");
 
-			notificationBL.insert(notification);
+			notificationImpl.insert(notification);
 
 			history.setDate(date);
 			history.setHistory_RequestId(request.getId());
@@ -238,8 +238,8 @@ public class RequestImpl extends DBConnection{
 	public static Request getTicket(Request request) {
 
 		RequestHome requestHome = new RequestHome();
-		NotificationBL notificationBL = new NotificationBL();
-		HistoryBL historyBL = new HistoryBL();
+		NotificationImpl notificationImpl = new NotificationImpl();
+//		HistoryImpl historyImpl = new HistoryImpl();
 		Notifications notification = new Notifications();
 		// NotificationsHome notificationsHome = new NotificationsHome();
 		// HistoryHome historyHome = new HistoryHome();
@@ -260,7 +260,7 @@ public class RequestImpl extends DBConnection{
 			notification.setSeen("1");
 			notification.setType("delete request");
 
-			notificationBL.insert(notification);
+			notificationImpl.insert(notification);
 
 			history.setDate(date);
 			history.setHistory_RequestId(request.getId());
