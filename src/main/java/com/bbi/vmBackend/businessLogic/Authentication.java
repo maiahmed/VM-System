@@ -20,8 +20,20 @@ public class Authentication {
 			return null;
 
 	}
-	
-	public int validateSession(Session session) {
+	public int getNextToken(Session session) {
+		int nextToken = 0;
+		
+			nextToken = session.getToken();
+			DataAccessFacade dataAccessFacade = new DataAccessFacade();
+			if(dataAccessFacade.getById(session) != null) {
+				nextToken = session.getToken() + 1;
+				session.setToken(nextToken);
+			}
+			return nextToken;
+		
+	}
+
+	public int validateSession(Session session) { //you only check the token > rename it to validateToken
 		int nextToken = -1;
 		
 		DataAccessFacade dataAccessFacade = new DataAccessFacade();

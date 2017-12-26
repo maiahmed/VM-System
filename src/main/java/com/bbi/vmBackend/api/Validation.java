@@ -44,15 +44,19 @@ public class Validation {
 		int userId = session.getUser_Id();
 		int token = session.getToken();
 		String key = session.getKey();
-		String lastInsertion = session.getLastInsertion().toString();
+		String lastInsertion = session.getLastInsertion().toString(); //should i check the dates of the session
 		String lastUpdate = session.getLastUpdate().toString();
-
+		
+		System.out.println("Validate the session parameters ");
+		System.out.println("userId :" + userId + " token:" + token + " key:" + key);
+		
 		if (token < 0 || token == 0)
 			valid = false;
-		if (userId < 0 || userId==0)
+		if (userId < 0 || userId == 0)
 			valid = false;
 		if ((Integer.parseInt(key)) < 0 || (Integer.parseInt(key)) == 0)
 			valid = false;
+		
 		if (validateDate(lastInsertion) == false)
 			valid = false;
 		if (validateDate(lastUpdate) == false)

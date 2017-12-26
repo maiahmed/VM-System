@@ -29,7 +29,7 @@ public class API {
 	// http://localhost:8080/VM_Syatem/rest/api/
 
 	@POST
-@Path("/")
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(JSONObject inputJsonObj) {
 		System.out.println("-----------i'm in Login-------------------");
@@ -44,10 +44,8 @@ public class API {
 
 			if (session != null) {
 				Response.ResponseBuilder rb = Response.ok("the Login response");
-				response = rb.header("session_id", session.getSessionId())
-						.header("user_id", session.getUser_Id())
-						.header("token", session.getToken())
-						.header("key", session.getKey()).build();
+				response = rb.header("session_id", session.getSessionId()).header("user_id", session.getUser_Id())
+						.header("token", session.getToken()).header("key", session.getKey()).build();
 			}
 		} else {
 
@@ -65,7 +63,6 @@ public class API {
 			@PathParam("key") String key, @PathParam("lastInsertion") Date lastInsertion,
 			@PathParam("lastUpdate") Date lastUpdate, @PathParam("notif_user_id") int notifUserId) {
 
-
 		NotificationBL notificationBL = new NotificationBL();
 		Session session = new Session();
 		session.setUser_Id(user_id);
@@ -74,8 +71,9 @@ public class API {
 		session.setLastUpdate(lastUpdate);
 		session.setLastInsertion(lastInsertion);
 
+		Authentication authentication = new Authentication();
 		if (validateSession(session)) { // if all session parameters is validated well
-			getNextToken(session);
+			authentication.getNextToken(session);
 			return notificationBL.getNotificationsFromFacade(notifUserId);
 		} else
 
@@ -88,44 +86,115 @@ public class API {
 
 	}
 
-	public int getNextToken(Session session) { // get next token
-		NotificationBL notificationBL = new NotificationBL();
-		return notificationBL.getNextToken(session); // if token > 0 get it else token will be=0
+	@GET
+	@Path("allEmployees")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<DaoObject> getAllEmployees(@PathParam("user_id") int user_id, @PathParam("token") int token,
+			@PathParam("key") String key, @PathParam("sessionId") int sessionId) {
+		System.out.println("-------------------------------hello------------------");
+		EmployeeBL employeeBL = new EmployeeBL();
+		Session session = new Session();
+		session.setUser_Id(user_id);
+		session.setToken(token);
+		session.setKey(key);
+
+		Authentication authentication = new Authentication();
+		if (validateSession(session)) { // if all session parameters is validated well
+			authentication.getNextToken(session);
+			return employeeBL.listAllEmployeesBL();
+		} else
+
+			return null;
 
 	}
 
-//	@GET // IT manager will get all the histories of all the employees
-//	@Path("/{user_id}/{token}/{key}/{lastInsertion}/{lastUpdate}/{getHistroy}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public List<DaoObject> getHistory(@PathParam("user_id") int user_id, @PathParam("token") int token,
-//			@PathParam("key") String key, @PathParam("lastInsertion") Date lastInsertion,
-//			@PathParam("lastUpdate") Date lastUpdate) {
-//
-//		HistoryBL historyBL = new HistoryBL();
-//
-//		Session session = new Session();
-//		session.setUser_Id(user_id);
-//		session.setToken(token);
-//		session.setKey(key);
-//		session.setLastUpdate(lastUpdate);
-//		session.setLastInsertion(lastInsertion);
-//		if (validateSession(session)) { // validate the session input within api
-//			getNextToken(session); // then get the next session token
-//			return historyBL.listAllHisBL();
-//		} else
-//			return null;
-//	
-//		Authentication authentication = new Authentication();
-//		authentication.validateSession(session); // from mai
-//		return session;
-//	}
+	@GET
+	@Path("/{user_id}/{token}/{key}/{session_id}/") // write the parameters in the body
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean insertNewEmployee(@PathParam("user_id") int user_id, @PathParam("token") int token,
+			@PathParam("key") String key, @PathParam("sessionId") int sessionId, JSONObject json) {
+
+		EmployeeBL employeeBL = new EmployeeBL();
+		Session session = new Session();
+		session.setUser_Id(user_id);
+		session.setToken(token);
+		session.setKey(key);
+
+		Employee employee = new Employee();
+		employee.setUserId((Integer) json.get("username"));
+		employee.setName((String) json.get("name"));
+		employee.setPassword((String) json.get("password"));
+		employee.setEmail((String) json.get("email"));
+		employee.setType((String) json.get("type"));
+		employee.setManager((Integer) json.get("manager"));
+
+		Authentication authentication = new Authentication();
+		if (validateSession(session)) { // if all session parameters is validated well
+			authentication.getNextToken(session);
+			return employeeBL.insertEmployeesBL(employee);
+		} else
+			return false;
+
+	}
+
+	@DELETE
+	@Path("/{user_id}/{token}/{key}/{session_id}/{deleteEmployeeId}") // write the parameters in the body
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean deleteEmployee(@PathParam("user_id") int user_id, @PathParam("token") int token,
+			@PathParam("key") String key, @PathParam("sessionId") int sessionId,
+			@PathParam("deleteEmployeeId") int deleteEmployeeId) {
+
+		EmployeeBL employeeBL = new EmployeeBL();
+		Session session = new Session();
+		session.setUser_Id(user_id);
+		session.setToken(token);
+		session.setKey(key);
+
+		Employee employee = new Employee();
+		employee.setUserId(deleteEmployeeId);
+
+		Authentication authentication = new Authentication();
+		if (validateSession(session)) { // if all session parameters is validated well
+			authentication.getNextToken(session);
+			return employeeBL.deleteEmployeesBL(employee);
+		} else
+			return false;
+
+	}
+
+	@PATCH
+	@Path("/{user_id}/{token}/{key}/{session_id}/") // write the parameters in the body
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean updateEmployee(@PathParam("user_id") int user_id, @PathParam("token") int token,
+			@PathParam("key") String key, @PathParam("sessionId") int sessionId, JSONObject json) {
+		EmployeeBL employeeBL = new EmployeeBL();
+		Session session = new Session();
+		session.setUser_Id(user_id);
+		session.setToken(token);
+		session.setKey(key);
+
+		Employee employee = new Employee();
+		employee.setUserId((Integer) json.get("username"));
+		employee.setName((String) json.get("name"));
+		employee.setPassword((String) json.get("password"));
+		employee.setEmail((String) json.get("email"));
+		employee.setType((String) json.get("type"));
+		employee.setManager((Integer) json.get("manager"));
+
+		Authentication authentication = new Authentication();
+		if (validateSession(session)) { // if all session parameters is validated well
+			authentication.getNextToken(session);
+			return employeeBL.updateEmployeesBL(employee);
+		} else
+			return false;
+
+	}
 
 	@POST
 	@Path("/{user_id}/{token}/{key}/{session_id}/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Comment getComment(@PathParam("user_id") int user_id,
-			@PathParam("token") int token, @PathParam("key") String key,
-			@PathParam("sessionId") int sessionId) {
+	public Comment getComment(@PathParam("user_id") int user_id, @PathParam("token") int token,
+			@PathParam("key") String key, @PathParam("sessionId") int sessionId) {
 		System.out.println("annnnnnnnnnnnnnnnn commmmmmmment");
 		Authentication authentication = new Authentication();
 		Session session = new Session();
@@ -152,9 +221,8 @@ public class API {
 	@DELETE
 	@Path("/{user_id}/{token}/{key}/{session_id}/{comment_id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean deleteComment(@PathParam("user_id") int user_id,
-			@PathParam("token") int token, @PathParam("key") String key,
-			@PathParam("sessionId") int sessionId,
+	public boolean deleteComment(@PathParam("user_id") int user_id, @PathParam("token") int token,
+			@PathParam("key") String key, @PathParam("sessionId") int sessionId,
 			@PathParam("comment_id") int comment_id) {
 		System.out.println("annnnnnnnnnnnnnnnn commmmmmmment del ");
 		Authentication authentication = new Authentication();
@@ -186,23 +254,21 @@ public class API {
 	@PATCH
 	@Path("/{user_id}/{token}/{key}/{session_id}/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean updateComment(@PathParam("user_id") int user_id,
-			@PathParam("token") int token, @PathParam("key") String key,
-			@PathParam("sessionId") int sessionId, JSONObject commentJsonObject) {
-		System.out.println("annnnnnnnnnnnnnnnn commmmmmmment update "
-				+ commentJsonObject + " "
+	public boolean updateComment(@PathParam("user_id") int user_id, @PathParam("token") int token,
+			@PathParam("key") String key, @PathParam("sessionId") int sessionId, JSONObject commentJsonObject) {
+		System.out.println("annnnnnnnnnnnnnnnn commmmmmmment update " + commentJsonObject + " "
 				+ (String) commentJsonObject.get("content"));
 		Authentication authentication = new Authentication();
 		Comment comment = new Comment();
 		boolean isUpdated = false;
 		comment.setContent((String) commentJsonObject.get("content"));
-		comment.setComment_id((int) commentJsonObject.get("comment_id"));
+		comment.setComment_id((Integer) commentJsonObject.get("comment_id"));
 
 		Session session = new Session();
 		session.setUser_Id(user_id);
 		session.setKey(key);
 		session.setSessionId(sessionId);
-		System.out.println("sss "+ session.getUser_Id()+" "+session.getSessionId());
+		System.out.println("sss " + session.getUser_Id() + " " + session.getSessionId());
 		int nextToken = authentication.validateSession(session);
 		System.out.println("nex " + nextToken);
 		if (nextToken != -1) {
@@ -220,16 +286,12 @@ public class API {
 		return isUpdated;
 	}
 
-	
-
 	@POST
 	@Path("/{user_id}/{token}/{key}/{session_id}/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean insertComment(@PathParam("user_id") int user_id,
-			@PathParam("token") int token, @PathParam("key") String key,
-			@PathParam("sessionId") int sessionId, JSONObject commentJsonObject) {
-		System.out.println("annnnnnnnnnnnnnnnn commmmmmmment insert "
-				+ commentJsonObject + " "
+	public boolean insertComment(@PathParam("user_id") int user_id, @PathParam("token") int token,
+			@PathParam("key") String key, @PathParam("sessionId") int sessionId, JSONObject commentJsonObject) {
+		System.out.println("annnnnnnnnnnnnnnnn commmmmmmment insert " + commentJsonObject + " "
 				+ (String) commentJsonObject.get("content"));
 		Authentication authentication = new Authentication();
 		Comment comment = new Comment();
@@ -241,7 +303,7 @@ public class API {
 		session.setUser_Id(user_id);
 		session.setKey(key);
 		session.setSessionId(sessionId);
-		System.out.println("sss "+ session.getUser_Id()+" "+session.getSessionId());
+		System.out.println("sss " + session.getUser_Id() + " " + session.getSessionId());
 		int nextToken = authentication.validateSession(session);
 		System.out.println("nex " + nextToken);
 		if (nextToken != -1) {
