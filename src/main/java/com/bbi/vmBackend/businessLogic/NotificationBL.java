@@ -1,43 +1,29 @@
 package com.bbi.vmBackend.businessLogic;
 
 import java.util.List;
-
 import com.bbi.vmBackend.da.dao.DaoObject;
+import com.bbi.vmBackend.da.dao.Session;
 import com.bbi.vmBackend.facade.DataAccessFacade;
 
 public class NotificationBL {
 
-	DataAccessFacade dataAccessFacade = new DataAccessFacade();
-
-	public List<DaoObject> listAllNotifBL() {
-		return dataAccessFacade.listAll(5); // list all notification
-
+	// we are in the business logic layer
+	public int getNextToken(Session session) {
+		int nextToken = 0;
+		
+			nextToken = session.getToken();
+			DataAccessFacade dataAccessFacade = new DataAccessFacade();
+			if(dataAccessFacade.getById(session) != null) {
+				nextToken = session.getToken() + 1;
+				session.setToken(nextToken);
+			}
+			return nextToken;
+		
 	}
 
-	public boolean insertNotifBL(DaoObject obj) {
-		if (dataAccessFacade.insert(obj))
-			return true;
-		else
-			return false;
-
-	}
-
-	public boolean updateNotifBL(DaoObject obj) {
-		if (dataAccessFacade.update(obj))
-			return true;
-		else
-			return false;
-	}
-
-	public boolean deleteNotifBL(DaoObject obj) {
-		if (dataAccessFacade.delete(obj))
-			return true;
-		else
-			return false;
-	}
-
-	public DaoObject getNotifByIdBL(DaoObject obj) {
-		return dataAccessFacade.getById(obj);
+	public List<DaoObject> getNotificationsFromFacade(int notifUserId) { // list of notifications
+		DataAccessFacade dataAccessFacade = new DataAccessFacade();
+		return dataAccessFacade.EmployeeNotification(notifUserId + "");
 
 	}
 }

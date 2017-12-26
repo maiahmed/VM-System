@@ -13,16 +13,17 @@ import com.bbi.vmBackend.da.dao.History;
 
 public class HistoryHome extends DBConnection implements DaoHome {
 	private final static String INSERTQUERY = "INSERT INTO history user_type , date , name , history_user_id , "
-			+ "history_request_id , status VALUES (?,?,?,?,?,?,?)";	private final static String selectQuery = "SELECT * FROM history ";
+			+ "history_request_id , status VALUES (?,?,?,?,?,?,?)";
+	private final static String selectQuery = "SELECT * FROM history ";
 	private final static String UPDATEQUERY = "UPDATE history set user_type=? , date=? , name=? , history_user_id=? ,history_request_id=? , status=? "
 			+ " WHERE id=?";
-	private final static String DELETEQUERY =  "DELETE FROM history " + "WHERE id = ?";
+	private final static String DELETEQUERY = "DELETE FROM history " + "WHERE id = ?";
 	private final static String GETONEQUERY = "SELECT * FROM history " + "WHERE id=?";
 	private final static String listEmployeeHistoryQuery = "SELECT * FROM history " + "WHERE history_user_id=?";
 
 	@Override
 	public List<DaoObject> listAll() {
-		
+
 		Connection conn = getConnection();
 		List<DaoObject> HistoryList = new ArrayList<>();
 		History history = new History();
@@ -83,7 +84,7 @@ public class HistoryHome extends DBConnection implements DaoHome {
 	public boolean insert(DaoObject obj) {
 		boolean entered = false;
 		History history = (History) obj;
-		
+
 		try {
 
 			Connection conn = getConnection();
@@ -128,7 +129,7 @@ public class HistoryHome extends DBConnection implements DaoHome {
 
 	@Override
 	public boolean delete(DaoObject obj) {
-	
+
 		Connection conn = getConnection();
 		boolean entered = false;
 		History history = (History) obj;

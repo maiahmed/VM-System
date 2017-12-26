@@ -12,6 +12,7 @@ import com.bbi.vmBackend.da.RequestHome;
 import com.bbi.vmBackend.da.SessionHome;
 import com.bbi.vmBackend.da.dao.DaoObject;
 import com.bbi.vmBackend.da.dao.Employee;
+import com.bbi.vmBackend.da.dao.LoginHome;
 import com.bbi.vmBackend.da.dao.Session;
 
 public class DataAccessFacade {
@@ -23,6 +24,7 @@ public class DataAccessFacade {
 	private OSHome osHome;
 	private RequestHome requestHome;
 	private SessionHome sessionHome;
+	private LoginHome loginHome;
 
 	public DataAccessFacade() {
 		commentHome = new CommentHome();
@@ -33,15 +35,21 @@ public class DataAccessFacade {
 		osHome = new OSHome();
 		requestHome = new RequestHome();
 		sessionHome = new SessionHome();
+		loginHome = new LoginHome();
 
 	}
 
-	public Employee facadeEmplyeeExist(String userName, String password) {
-		return employeeHome.getEmployee(userName, password);
+	/////////////////////////////////////////////////
+	public Employee checkAuthentication(String userName, String password) {
+
+		if (loginHome.employeeIsExistOrNot(userName, password) == true)
+			return loginHome.employeeLoginInfo(userName, password);
+		else
+			return null;
 	}
 
 	public Session facadeGetSession(Employee employee) {
-		return employeeHome.createSession(employee);
+		return loginHome.createSession(employee);
 	}
 
 	public List<DaoObject> listAll(int type) {
@@ -91,8 +99,9 @@ public class DataAccessFacade {
 
 	}
 
-	public List<DaoObject> EmployeeNotification(String loginUserId) {
-		return EmployeeNotification(loginUserId);
+	public List<DaoObject> EmployeeNotification(String notifUserId) {
+		NotificationsHome notificationsHome = new NotificationsHome();
+		return notificationsHome.employeeNotification(notifUserId);
 
 	}
 
@@ -164,6 +173,5 @@ public class DataAccessFacade {
 			return false;
 
 	}
-
 
 }

@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import com.bbi.vmBackend.da.dao.DaoObject;
+import com.bbi.vmBackend.da.dao.History;
 import com.bbi.vmBackend.da.dao.Notifications;
 
 public class NotificationsHome extends DBConnection implements DaoHome {
@@ -60,7 +61,6 @@ public class NotificationsHome extends DBConnection implements DaoHome {
 			PreparedStatement preparedStmt = conn.prepareStatement(sql);
 			preparedStmt.setInt(1, notification.getId());
 			rs = preparedStmt.executeQuery();
-
 			while (rs.next()) {
 				notification.setId(rs.getInt("notification_id"));
 				notification.setContent(rs.getString("content"));
@@ -74,9 +74,7 @@ public class NotificationsHome extends DBConnection implements DaoHome {
 				notification.setReminder(rs.getString("reminder"));
 				notification.setExpired(rs.getString("expired"));
 				notification.setExtra_Notif(rs.getString("extra_notif"));
-
 			}
-
 			rs.close();
 			conn.close();
 		} catch (SQLException sq) {
@@ -164,16 +162,16 @@ public class NotificationsHome extends DBConnection implements DaoHome {
 		return entered;
 	}
 
-	public List<DaoObject> EmployeeNotification(String loginUserId) {
+	public List<DaoObject> employeeNotification(String notifUserId) {
+		List<DaoObject> EmplNotificationsList = new ArrayList<>();
+		ResultSet rs = null;
 		sql = "SELECT * FROM notification " + "WHERE notif_user_id=? ";
 		Connection conn = getConnection();
 
 		Notifications EmployeeNotification = new Notifications();
-		List<DaoObject> EmplNotificationsList = new ArrayList<>();
-		ResultSet rs = null;
 		try {
 			PreparedStatement preparedStmt = conn.prepareStatement(sql);
-			preparedStmt.setString(1, loginUserId);
+			preparedStmt.setString(1, notifUserId);
 			rs = preparedStmt.executeQuery();
 
 			while (rs.next()) {
